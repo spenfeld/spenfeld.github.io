@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Games</title>
+  <title>ARCADE</title>
   <script src="https://cdn.tailwindcss.com"></script>
 
   <style>
@@ -14,6 +14,8 @@
       --accent2:#6b7280;
 
       --border:1px solid rgba(255,255,255,0.08);
+      --glow:none;
+
       --font:ui-sans-serif;
     }
 
@@ -23,10 +25,83 @@
       background: var(--bg);
       color: var(--text);
     }
+
+    a, button, div, p, h1, h2, h3, span {
+      text-shadow: var(--glow);
+    }
+
+    /* ✅ CARD SYSTEM (THIS FIXES YOUR GLOW ISSUE) */
+    .card {
+      border: var(--border);
+      box-shadow: var(--glow);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      background: transparent;
+    }
+
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--glow), 0 0 25px rgba(255,255,255,0.06);
+    }
+
+    .nav-link {
+      transition: opacity 0.12s ease, transform 0.12s ease;
+      cursor: pointer;
+    }
+
+    .nav-link:hover {
+      opacity: 0.6;
+      transform: translateX(1px);
+    }
+
+    .cursor {
+      animation: blink 1s infinite;
+      display: inline-block;
+    }
+
+    @keyframes blink {
+      0%, 50% { opacity: 1; }
+      51%, 100% { opacity: 0; }
+    }
+
+    .theme-option {
+      display: inline-block;
+      cursor: pointer;
+    }
+
+    .theme-active {
+      text-shadow: 0 0 8px currentColor;
+      animation: flicker 2.5s infinite;
+    }
+
+    @keyframes flicker {
+      0%, 100% { opacity: 1; }
+      92% { opacity: 0.85; }
+      94% { opacity: 1; }
+      96% { opacity: 0.9; }
+    }
+
+    * {
+      transition-duration: 120ms;
+    }
   </style>
 </head>
 
 <body>
+
+<!-- SCANLINES -->
+<div class="pointer-events-none fixed inset-0 z-50"
+  style="opacity:0.12;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,0.35) 3px
+  );"></div>
+
+<!-- CRT VIGNETTE -->
+<div class="pointer-events-none fixed inset-0 z-40"
+  style="background: radial-gradient(circle at center, transparent 60%, rgba(0,0,0,0.55) 100%);">
+</div>
 
 <!-- BOOT -->
 <div id="boot"
@@ -34,74 +109,90 @@
   style="background: var(--bg); color: var(--text);">
 
   <div class="text-center font-mono">
-
-    <p class="text-sm opacity-60 mb-2">
-      OWNER: Spencer_Feldmann
-    </p>
-
-    <p id="bootText" class="tracking-widest">
-      INITIALIZING SESSION
-    </p>
-
+    <p id="bootText">INITIALIZING SESSION</p>
+    <p class="text-sm opacity-70 mt-3">HOST: Spencer_Feldmann</p>
   </div>
 </div>
 
 <!-- NAVBAR -->
-<nav class="flex justify-between items-center px-6 py-5"
+<nav class="px-6 py-5 font-mono tracking-wide"
   style="border-bottom:var(--border)">
 
-  <a href="index.html" class="font-semibold">Spencer_Feldmann</a>
+  <div class="max-w-5xl mx-auto flex items-center justify-between">
 
-  <div class="flex gap-5 text-sm" style="color:var(--muted)">
-    <a href="projects.html">Projects</a>
-    <a href="about.html">About</a>
-    <a href="games.html">Games</a>
+    <a href="./" class="nav-link font-semibold" style="color:var(--accent)">
+      [ HOST: Spencer_Feldmann<span class="cursor">_</span> ]
+    </a>
 
-    <select id="themeSelect"
-      class="bg-transparent border px-2 py-1 text-sm"
-      style="border-color:var(--accent2); color:var(--text)">
-      <option value="mono">Mono</option>
-      <option value="light">Light</option>
-      <option value="amber">Amber</option>
-      <option value="matrix">Matrix</option>
-    </select>
+    <div class="flex items-center gap-5 text-sm" style="color:var(--muted)">
+      <a class="nav-link" href="projects.html">[ ARCHIVE ]</a>
+      <a class="nav-link" href="about.html">[ PROFILE ]</a>
+      <a class="nav-link" href="games.html">[ ARCADE ]</a>
+    </div>
+
   </div>
 </nav>
 
 <!-- CONTENT -->
 <section class="max-w-5xl mx-auto px-6 py-14">
 
-  <h1 class="text-3xl font-semibold mb-8">Games</h1>
+  <h1 class="text-3xl font-semibold mb-8">ARCADE</h1>
 
   <p class="mb-8" style="color:var(--muted)">
     Small UI systems and interaction tests exploring frontend behavior and interface design.
   </p>
 
-  <!-- 2 COLUMN GRID -->
   <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-    <div class="p-5 rounded-xl" style="border:var(--border)">
-      <p class="font-semibold">Click Counter</p>
-      <p class="text-sm mt-2" style="color:var(--muted)">
+    <!-- CARD 1 -->
+    <div class="card p-5 rounded-xl">
+
+      <p class="font-semibold mb-3">CLICK COUNTER</p>
+
+      <p class="text-sm mb-4" style="color:var(--muted)">
         Simple state interaction test using click events and counters.
       </p>
-      <button class="mt-4 text-sm" style="color:var(--accent)">
-        Click me
+
+      <button id="counterBtn"
+        class="text-sm"
+        style="color:var(--accent)">
+        Click me (0)
       </button>
+
     </div>
 
-    <div class="p-5 rounded-xl" style="border:var(--border)">
-      <p class="font-semibold">UI Interaction Test</p>
-      <p class="text-sm mt-2" style="color:var(--muted)">
+    <!-- CARD 2 -->
+    <div class="card p-5 rounded-xl">
+
+      <p class="font-semibold mb-3">UI INTERACTION TEST</p>
+
+      <p class="text-sm mb-4" style="color:var(--muted)">
         Hover states, layout shifts, and responsiveness experiments.
       </p>
+
+      <div class="space-y-2 text-sm" style="color:var(--muted)">
+        <p>Hover behavior testing</p>
+        <p>Layout stability experiments</p>
+        <p>Responsive spacing validation</p>
+      </div>
+
     </div>
 
   </div>
-
 </section>
 
-<!-- THEME -->
+<!-- THEME SWITCH -->
+<div id="themeBar"
+  class="fixed bottom-4 right-4 font-mono text-sm select-none">
+
+  <span class="theme-option theme-active" data-theme="mono">[●] MONO</span>
+  <span class="theme-option ml-4" data-theme="amber">[ ] AMBER</span>
+  <span class="theme-option ml-4" data-theme="matrix">[ ] MATRIX</span>
+  <span class="theme-option ml-4" data-theme="light">[ ] LIGHT</span>
+
+</div>
+
+<!-- THEMES -->
 <script>
 const themes = {
   mono:{
@@ -111,16 +202,7 @@ const themes = {
     "--accent":"#9ca3af",
     "--accent2":"#6b7280",
     "--border":"1px solid rgba(255,255,255,0.08)",
-    "--font":"ui-sans-serif"
-  },
-
-  light:{
-    "--bg":"#f8fafc",
-    "--text":"#0f172a",
-    "--muted":"#475569",
-    "--accent":"#0284c7",
-    "--accent2":"#0369a1",
-    "--border":"1px solid rgba(15,23,42,0.12)",
+    "--glow":"none",
     "--font":"ui-sans-serif"
   },
 
@@ -131,6 +213,7 @@ const themes = {
     "--accent":"#fbbf24",
     "--accent2":"#fde68a",
     "--border":"1px solid rgba(251,191,36,0.22)",
+    "--glow":"0 0 10px rgba(251,191,36,0.35)",
     "--font":"ui-monospace"
   },
 
@@ -141,9 +224,34 @@ const themes = {
     "--accent":"#22ff88",
     "--accent2":"#99ffbb",
     "--border":"1px solid rgba(0,255,102,0.22)",
+    "--glow":"0 0 12px rgba(0,255,102,0.4)",
     "--font":"ui-monospace"
+  },
+
+  light:{
+    "--bg":"#f8fafc",
+    "--text":"#0f172a",
+    "--muted":"#475569",
+    "--accent":"#0284c7",
+    "--accent2":"#0369a1",
+    "--border":"1px solid rgba(15,23,42,0.12)",
+    "--glow":"none",
+    "--font":"ui-sans-serif"
   }
 };
+
+function setUI(active){
+  document.querySelectorAll(".theme-option").forEach(el=>{
+    el.textContent = `[ ] ${el.dataset.theme.toUpperCase()}`;
+    el.classList.remove("theme-active");
+  });
+
+  const el = document.querySelector(`[data-theme="${active}"]`);
+  if(el){
+    el.textContent = `[●] ${active.toUpperCase()}`;
+    el.classList.add("theme-active");
+  }
+}
 
 function applyTheme(name){
   const t = themes[name];
@@ -151,58 +259,64 @@ function applyTheme(name){
     document.documentElement.style.setProperty(k, t[k]);
   }
   localStorage.setItem("theme", name);
+  setUI(name);
 }
 
-window.addEventListener("DOMContentLoaded", () => {
+window.addEventListener("DOMContentLoaded", ()=>{
   const saved = localStorage.getItem("theme") || "mono";
   applyTheme(saved);
 
-  const select = document.getElementById("themeSelect");
-  select.value = saved;
-
-  select.addEventListener("change", e => applyTheme(e.target.value));
+  document.querySelectorAll(".theme-option").forEach(el=>{
+    el.addEventListener("click", ()=>applyTheme(el.dataset.theme));
+  });
 });
 </script>
 
-<!-- BOOT (FIXED TIMING + CONSISTENT KEY) -->
+<!-- COUNTER -->
+<script>
+const btn = document.getElementById("counterBtn");
+let count = 0;
+
+btn.addEventListener("click", ()=>{
+  count++;
+  btn.textContent = `Click me (${count})`;
+});
+</script>
+
+<!-- BOOT -->
 <script>
 (function () {
-
   const boot = document.getElementById("boot");
   const text = document.getElementById("bootText");
 
-  // match index behavior
-  if (sessionStorage.getItem("bootPlayed")) {
+  if(!boot) return;
+
+  if(sessionStorage.getItem("bootPlayed")){
     boot.remove();
     return;
   }
 
-  sessionStorage.setItem("bootPlayed", "true");
+  sessionStorage.setItem("bootPlayed","true");
 
-  const messages = [
+  const msgs = [
     "INITIALIZING SESSION",
     "LOADING UI MODULES...",
-    "LAUNCHING PORTFOLIO...",
+    "LAUNCHING ARCADE...",
     "ENTERING SYSTEM"
   ];
 
   let i = 0;
-
-  const interval = setInterval(() => {
+  const interval = setInterval(()=>{
     i++;
-    if (i < messages.length) {
-      text.textContent = messages[i];
-    }
+    if(i < msgs.length) text.textContent = msgs[i];
   }, 500);
 
-  setTimeout(() => {
+  setTimeout(()=>{
     clearInterval(interval);
-
-    boot.style.transition = "opacity 0.7s ease";
     boot.style.opacity = "0";
-
-    setTimeout(() => boot.remove(), 700);
-  }, 2000);
+    boot.style.transition = "opacity 0.7s ease";
+    setTimeout(()=>boot.remove(),700);
+  },2000);
 
 })();
 </script>

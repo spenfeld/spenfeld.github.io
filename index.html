@@ -14,7 +14,13 @@
       --accent2:#9ca3af;
 
       --border:1px solid rgba(255,255,255,0.08);
+      --glow:none;
+
       --font:ui-sans-serif;
+    }
+
+    html {
+      background: var(--bg);
     }
 
     body {
@@ -23,6 +29,58 @@
       background: var(--bg);
       color: var(--text);
     }
+
+    /* ✅ FIX: MAKE GLOW APPLY CONSISTENTLY (INCLUDING CARDS) */
+    a, button, select, h1, h2, h3, p, div, span {
+      text-shadow: var(--glow);
+    }
+
+    /* 🔥 IMPORTANT FIX: ensures nested card text inherits properly */
+    .card, .card * {
+      text-shadow: var(--glow);
+    }
+
+    .nav-link {
+      transition: opacity 0.12s ease, transform 0.12s ease;
+      cursor: pointer;
+    }
+
+    .nav-link:hover {
+      opacity: 0.6;
+      transform: translateX(1px);
+    }
+
+    .cursor {
+      display: inline-block;
+      margin-left: 0px;
+      animation: blink 1s infinite;
+    }
+
+    @keyframes blink {
+      0%, 50% { opacity: 1; }
+      51%, 100% { opacity: 0; }
+    }
+
+    .theme-active {
+      text-shadow: 0 0 8px currentColor;
+      animation: flicker 2.5s infinite;
+    }
+
+    @keyframes flicker {
+      0%, 100% { opacity: 1; }
+      92% { opacity: 0.85; }
+      94% { opacity: 1; }
+      96% { opacity: 0.9; }
+    }
+
+    .theme-option {
+      display: inline-block;
+      cursor: pointer;
+    }
+
+    * {
+      transition-duration: 120ms;
+    }
   </style>
 </head>
 
@@ -30,54 +88,46 @@
 
 <!-- SCANLINES -->
 <div class="pointer-events-none fixed inset-0 z-50"
-  style="
-    opacity:0.2;
-    background: repeating-linear-gradient(
-      to bottom,
-      transparent,
-      transparent 2px,
-      rgba(0,0,0,0.35) 3px
-    );
-  ">
+  style="opacity:0.2;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,0.35) 3px
+  );"></div>
+
+<!-- CRT -->
+<div class="pointer-events-none fixed inset-0 z-40"
+  style="background: radial-gradient(circle at center, transparent 60%, rgba(0,0,0,0.55) 100%);">
 </div>
 
-<!-- BOOT SCREEN -->
+<!-- BOOT -->
 <div id="boot"
   class="fixed inset-0 flex items-center justify-center z-[9999]"
   style="background: var(--bg); color: var(--text);">
 
   <div class="text-center font-mono">
-
-    <p id="bootText" class="tracking-widest">
-      LAUNCHING PORTFOLIO...
-    </p>
-
-    <p class="text-sm opacity-70 mt-3">
-      OWNER: Spencer_Feldmann
-    </p>
-
+    <p id="bootText">LAUNCHING PORTFOLIO...</p>
+    <p class="text-sm opacity-70 mt-3">HOST: Spencer_Feldmann</p>
   </div>
 </div>
 
-<!-- NAVBAR -->
-<nav class="flex justify-between items-center px-6 py-5"
+<!-- NAV -->
+<nav class="px-6 py-5 font-mono"
   style="border-bottom:var(--border)">
 
-  <a href="index.html" class="font-semibold">Spencer_Feldmann</a>
+  <div class="max-w-5xl mx-auto flex items-center justify-between">
 
-  <div class="flex gap-5 text-sm" style="color:var(--muted)">
-    <a href="projects.html">Projects</a>
-    <a href="about.html">About</a>
-    <a href="games.html">Games</a>
+    <a href="./" class="nav-link font-semibold" style="color:var(--accent)">
+      [ HOST: Spencer_Feldmann<span class="cursor">_</span> ]
+    </a>
 
-    <select id="themeSelect"
-      class="bg-transparent border px-2 py-1 text-sm"
-      style="border-color:var(--accent2); color:var(--text)">
-      <option value="mono">Mono</option>
-      <option value="amber">Amber</option>
-      <option value="matrix">Matrix</option>
-      <option value="light">Light</option>
-    </select>
+    <div class="flex items-center gap-5 text-sm" style="color:var(--muted)">
+      <a class="nav-link" href="projects.html">[ ARCHIVE ]</a>
+      <a class="nav-link" href="about.html">[ PROFILE ]</a>
+      <a class="nav-link" href="games.html">[ ARCADE ]</a>
+    </div>
+
   </div>
 </nav>
 
@@ -92,16 +142,33 @@
     Focused on full-stack development, data systems, and building clean software experiences.
   </p>
 
-  <div class="p-5 rounded-xl" style="border:var(--border)">
+  <!-- 🔥 FIXED CARD -->
+  <div class="card p-5 rounded-xl"
+    style="border:var(--border); box-shadow:var(--glow);">
+
     <p class="font-semibold mb-2">Currently</p>
+
     <p style="color:var(--muted)">
-      University of Maryland - Computer Science & Economics. Experience in data systems, web development, and algorithmic problem solving.
+      University of Maryland - Computer Science & Economics.
+      Experience in data systems, web development,
+      and algorithmic problem solving.
     </p>
+
   </div>
 
 </section>
 
 <!-- THEME -->
+<div id="themeBar"
+  class="fixed bottom-4 right-4 font-mono text-sm select-none">
+
+  <span class="theme-option theme-active" data-theme="mono">[●] MONO</span>
+  <span class="theme-option ml-4" data-theme="amber">[ ] AMBER</span>
+  <span class="theme-option ml-4" data-theme="matrix">[ ] MATRIX</span>
+  <span class="theme-option ml-4" data-theme="light">[ ] LIGHT</span>
+
+</div>
+
 <script>
 const themes = {
   mono:{
@@ -111,16 +178,7 @@ const themes = {
     "--accent":"#9ca3af",
     "--accent2":"#6b7280",
     "--border":"1px solid rgba(255,255,255,0.08)",
-    "--font":"ui-sans-serif"
-  },
-
-  light:{
-    "--bg":"#f8fafc",
-    "--text":"#0f172a",
-    "--muted":"#475569",
-    "--accent":"#0284c7",
-    "--accent2":"#0369a1",
-    "--border":"1px solid rgba(15,23,42,0.12)",
+    "--glow":"none",
     "--font":"ui-sans-serif"
   },
 
@@ -131,6 +189,7 @@ const themes = {
     "--accent":"#fbbf24",
     "--accent2":"#fde68a",
     "--border":"1px solid rgba(251,191,36,0.22)",
+    "--glow":"0 0 10px rgba(251,191,36,0.35)",
     "--font":"ui-monospace"
   },
 
@@ -141,9 +200,34 @@ const themes = {
     "--accent":"#22ff88",
     "--accent2":"#99ffbb",
     "--border":"1px solid rgba(0,255,102,0.22)",
+    "--glow":"0 0 12px rgba(0,255,102,0.4)",
     "--font":"ui-monospace"
+  },
+
+  light:{
+    "--bg":"#f8fafc",
+    "--text":"#0f172a",
+    "--muted":"#475569",
+    "--accent":"#0284c7",
+    "--accent2":"#0369a1",
+    "--border":"1px solid rgba(15,23,42,0.12)",
+    "--glow":"none",
+    "--font":"ui-sans-serif"
   }
 };
+
+function setUI(active){
+  document.querySelectorAll(".theme-option").forEach(el=>{
+    el.textContent = `[ ] ${el.dataset.theme.toUpperCase()}`;
+    el.classList.remove("theme-active");
+  });
+
+  const el = document.querySelector(`[data-theme="${active}"]`);
+  if(el){
+    el.textContent = `[●] ${active.toUpperCase()}`;
+    el.classList.add("theme-active");
+  }
+}
 
 function applyTheme(name){
   const t = themes[name];
@@ -151,57 +235,51 @@ function applyTheme(name){
     document.documentElement.style.setProperty(k, t[k]);
   }
   localStorage.setItem("theme", name);
+  setUI(name);
 }
 
-window.addEventListener("DOMContentLoaded", () => {
+window.addEventListener("DOMContentLoaded", ()=>{
   const saved = localStorage.getItem("theme") || "mono";
   applyTheme(saved);
 
-  const select = document.getElementById("themeSelect");
-  select.value = saved;
-
-  select.addEventListener("change", e => applyTheme(e.target.value));
+  document.querySelectorAll(".theme-option").forEach(el=>{
+    el.addEventListener("click", ()=>applyTheme(el.dataset.theme));
+  });
 });
 </script>
 
 <!-- BOOT -->
 <script>
 (function () {
-
   const boot = document.getElementById("boot");
   const text = document.getElementById("bootText");
 
-  // only once per tab session
-  if (sessionStorage.getItem("bootPlayed")) {
+  if(sessionStorage.getItem("bootPlayed")){
     boot.remove();
     return;
   }
 
-  sessionStorage.setItem("bootPlayed", "true");
+  sessionStorage.setItem("bootPlayed","true");
 
   const messages = [
     "LAUNCHING PORTFOLIO...",
     "LOADING UI MODULES...",
-    "ENTERING SESSION"
+    "ENTERING SESSION..."
   ];
 
   let i = 0;
 
-  const interval = setInterval(() => {
+  const interval = setInterval(()=>{
     i++;
-    if (i < messages.length) {
-      text.textContent = messages[i];
-    }
+    if(i < messages.length) text.textContent = messages[i];
   }, 667);
 
-  setTimeout(() => {
+  setTimeout(()=>{
     clearInterval(interval);
-
-    boot.style.transition = "opacity 0.8s ease";
     boot.style.opacity = "0";
-
-    setTimeout(() => boot.remove(), 800);
-  }, 2000);
+    boot.style.transition = "opacity 0.8s ease";
+    setTimeout(()=>boot.remove(),800);
+  },2000);
 
 })();
 </script>
