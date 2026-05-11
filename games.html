@@ -2,106 +2,23 @@
 <html>
 <head>
   <title>ARCADE</title>
+
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <style>
-    :root {
-      --bg:#0b0b0b;
-      --text:#e5e5e5;
-      --muted:#a3a3a3;
+  <!-- GLOBAL STYLES -->
+  <link rel="stylesheet" href="styles/global.css">
 
-      --accent:#9ca3af;
-      --accent2:#6b7280;
-
-      --border:1px solid rgba(255,255,255,0.08);
-      --glow:none;
-
-      --font:ui-sans-serif;
-    }
-
-    body {
-      margin: 0;
-      font-family: var(--font);
-      background: var(--bg);
-      color: var(--text);
-    }
-
-    a, button, div, p, h1, h2, h3, span {
-      text-shadow: var(--glow);
-    }
-
-    /* ✅ CARD SYSTEM (THIS FIXES YOUR GLOW ISSUE) */
-    .card {
-      border: var(--border);
-      box-shadow: var(--glow);
-      transition: transform 0.15s ease, box-shadow 0.15s ease;
-      background: transparent;
-    }
-
-    .card:hover {
-      transform: translateY(-2px);
-      box-shadow: var(--glow), 0 0 25px rgba(255,255,255,0.06);
-    }
-
-    .nav-link {
-      transition: opacity 0.12s ease, transform 0.12s ease;
-      cursor: pointer;
-    }
-
-    .nav-link:hover {
-      opacity: 0.6;
-      transform: translateX(1px);
-    }
-
-    .cursor {
-      animation: blink 1s infinite;
-      display: inline-block;
-    }
-
-    @keyframes blink {
-      0%, 50% { opacity: 1; }
-      51%, 100% { opacity: 0; }
-    }
-
-    .theme-option {
-      display: inline-block;
-      cursor: pointer;
-    }
-
-    .theme-active {
-      text-shadow: 0 0 8px currentColor;
-      animation: flicker 2.5s infinite;
-    }
-
-    @keyframes flicker {
-      0%, 100% { opacity: 1; }
-      92% { opacity: 0.85; }
-      94% { opacity: 1; }
-      96% { opacity: 0.9; }
-    }
-
-    * {
-      transition-duration: 120ms;
-    }
-  </style>
+  <!-- THEME SYSTEM -->
+  <script src="scripts/theme.js" defer></script>
 </head>
 
 <body>
 
 <!-- SCANLINES -->
-<div class="pointer-events-none fixed inset-0 z-50"
-  style="opacity:0.12;
-  background: repeating-linear-gradient(
-    to bottom,
-    transparent,
-    transparent 2px,
-    rgba(0,0,0,0.35) 3px
-  );"></div>
+<div class="scanlines"></div>
 
-<!-- CRT VIGNETTE -->
-<div class="pointer-events-none fixed inset-0 z-40"
-  style="background: radial-gradient(circle at center, transparent 60%, rgba(0,0,0,0.55) 100%);">
-</div>
+<!-- CRT -->
+<div class="crt"></div>
 
 <!-- BOOT -->
 <div id="boot"
@@ -109,9 +26,17 @@
   style="background: var(--bg); color: var(--text);">
 
   <div class="text-center font-mono">
-    <p id="bootText">INITIALIZING SESSION</p>
-    <p class="text-sm opacity-70 mt-3">HOST: Spencer_Feldmann</p>
+
+    <p id="bootText">
+      INITIALIZING SESSION
+    </p>
+
+    <p class="text-sm opacity-70 mt-3">
+      HOST: Spencer_Feldmann
+    </p>
+
   </div>
+
 </div>
 
 <!-- NAVBAR -->
@@ -120,26 +45,61 @@
 
   <div class="max-w-5xl mx-auto flex items-center justify-between">
 
-    <a href="./" class="nav-link font-semibold" style="color:var(--accent)">
+    <a href="./"
+      class="nav-link font-semibold"
+      style="color:var(--accent)">
+
       [ HOST: Spencer_Feldmann<span class="cursor">_</span> ]
+
     </a>
 
-    <div class="flex items-center gap-5 text-sm" style="color:var(--muted)">
-      <a class="nav-link" href="projects.html">[ ARCHIVE ]</a>
-      <a class="nav-link" href="about.html">[ PROFILE ]</a>
-      <a class="nav-link" href="games.html">[ ARCADE ]</a>
+    <div
+      class="flex items-center gap-5 text-sm"
+      style="color:var(--muted)">
+
+      <a
+        class="nav-link"
+        href="projects.html">
+
+        [ ARCHIVE ]
+
+      </a>
+
+      <a
+        class="nav-link"
+        href="about.html">
+
+        [ PROFILE ]
+
+      </a>
+
+      <a
+        class="nav-link active-nav"
+        href="games.html">
+
+        [ ARCADE ]
+
+      </a>
+
     </div>
 
   </div>
+
 </nav>
 
 <!-- CONTENT -->
 <section class="max-w-5xl mx-auto px-6 py-14">
 
-  <h1 class="text-3xl font-semibold mb-8">ARCADE</h1>
+  <h1 class="text-3xl font-semibold mb-8">
+    ARCADE
+  </h1>
 
-  <p class="mb-8" style="color:var(--muted)">
-    Small UI systems and interaction tests exploring frontend behavior and interface design.
+  <p class="mb-8"
+    style="color:var(--muted)">
+
+    Small UI systems and interaction tests exploring
+    frontend behavior and interface design.
+
   </p>
 
   <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -147,16 +107,24 @@
     <!-- CARD 1 -->
     <div class="card p-5 rounded-xl">
 
-      <p class="font-semibold mb-3">CLICK COUNTER</p>
+      <p class="font-semibold mb-3">
+        CLICK COUNTER
+      </p>
 
-      <p class="text-sm mb-4" style="color:var(--muted)">
-        Simple state interaction test using click events and counters.
+      <p class="text-sm mb-4"
+        style="color:var(--muted)">
+
+        Simple state interaction test using
+        click events and counters.
+
       </p>
 
       <button id="counterBtn"
-        class="text-sm"
+        class="text-sm nav-link"
         style="color:var(--accent)">
+
         Click me (0)
+
       </button>
 
     </div>
@@ -164,132 +132,94 @@
     <!-- CARD 2 -->
     <div class="card p-5 rounded-xl">
 
-      <p class="font-semibold mb-3">UI INTERACTION TEST</p>
-
-      <p class="text-sm mb-4" style="color:var(--muted)">
-        Hover states, layout shifts, and responsiveness experiments.
+      <p class="font-semibold mb-3">
+        UI INTERACTION TEST
       </p>
 
-      <div class="space-y-2 text-sm" style="color:var(--muted)">
+      <p class="text-sm mb-4"
+        style="color:var(--muted)">
+
+        Hover states, layout shifts,
+        and responsiveness experiments.
+
+      </p>
+
+      <div class="space-y-2 text-sm"
+        style="color:var(--muted)">
+
         <p>Hover behavior testing</p>
         <p>Layout stability experiments</p>
         <p>Responsive spacing validation</p>
+
       </div>
 
     </div>
 
   </div>
+
 </section>
 
-<!-- THEME SWITCH -->
+<!-- HUD -->
 <div id="themeBar"
-  class="fixed bottom-4 right-4 font-mono text-sm select-none">
+  class="fixed bottom-4 left-0 right-0 px-6 font-mono text-sm select-none">
 
-  <span class="theme-option theme-active" data-theme="mono">[●] MONO</span>
-  <span class="theme-option ml-4" data-theme="amber">[ ] AMBER</span>
-  <span class="theme-option ml-4" data-theme="matrix">[ ] MATRIX</span>
-  <span class="theme-option ml-4" data-theme="light">[ ] LIGHT</span>
+  <div class="max-w-5xl mx-auto flex items-center justify-between">
+
+    <!-- STATUS -->
+    <span style="color:var(--muted)">
+      > SYSTEM STATUS: ONLINE
+    </span>
+
+    <!-- THEME PICKER -->
+    <div>
+
+      <span class="theme-option theme-active"
+        data-theme="mono">
+        [●] MONO
+      </span>
+
+      <span class="theme-option ml-4"
+        data-theme="amber">
+        [ ] AMBER
+      </span>
+
+      <span class="theme-option ml-4"
+        data-theme="matrix">
+        [ ] MATRIX
+      </span>
+
+      <span class="theme-option ml-4"
+        data-theme="light">
+        [ ] LIGHT
+      </span>
+
+    </div>
+
+  </div>
 
 </div>
-
-<!-- THEMES -->
-<script>
-const themes = {
-  mono:{
-    "--bg":"#0b0b0b",
-    "--text":"#e5e5e5",
-    "--muted":"#a3a3a3",
-    "--accent":"#9ca3af",
-    "--accent2":"#6b7280",
-    "--border":"1px solid rgba(255,255,255,0.08)",
-    "--glow":"none",
-    "--font":"ui-sans-serif"
-  },
-
-  amber:{
-    "--bg":"#0a0705",
-    "--text":"#fbbf24",
-    "--muted":"#f59e0b",
-    "--accent":"#fbbf24",
-    "--accent2":"#fde68a",
-    "--border":"1px solid rgba(251,191,36,0.22)",
-    "--glow":"0 0 10px rgba(251,191,36,0.35)",
-    "--font":"ui-monospace"
-  },
-
-  matrix:{
-    "--bg":"#020403",
-    "--text":"#00ff66",
-    "--muted":"#00cc55",
-    "--accent":"#22ff88",
-    "--accent2":"#99ffbb",
-    "--border":"1px solid rgba(0,255,102,0.22)",
-    "--glow":"0 0 12px rgba(0,255,102,0.4)",
-    "--font":"ui-monospace"
-  },
-
-  light:{
-    "--bg":"#f8fafc",
-    "--text":"#0f172a",
-    "--muted":"#475569",
-    "--accent":"#0284c7",
-    "--accent2":"#0369a1",
-    "--border":"1px solid rgba(15,23,42,0.12)",
-    "--glow":"none",
-    "--font":"ui-sans-serif"
-  }
-};
-
-function setUI(active){
-  document.querySelectorAll(".theme-option").forEach(el=>{
-    el.textContent = `[ ] ${el.dataset.theme.toUpperCase()}`;
-    el.classList.remove("theme-active");
-  });
-
-  const el = document.querySelector(`[data-theme="${active}"]`);
-  if(el){
-    el.textContent = `[●] ${active.toUpperCase()}`;
-    el.classList.add("theme-active");
-  }
-}
-
-function applyTheme(name){
-  const t = themes[name];
-  for(const k in t){
-    document.documentElement.style.setProperty(k, t[k]);
-  }
-  localStorage.setItem("theme", name);
-  setUI(name);
-}
-
-window.addEventListener("DOMContentLoaded", ()=>{
-  const saved = localStorage.getItem("theme") || "mono";
-  applyTheme(saved);
-
-  document.querySelectorAll(".theme-option").forEach(el=>{
-    el.addEventListener("click", ()=>applyTheme(el.dataset.theme));
-  });
-});
-</script>
 
 <!-- COUNTER -->
 <script>
 const btn = document.getElementById("counterBtn");
+
 let count = 0;
 
 btn.addEventListener("click", ()=>{
+
   count++;
+
   btn.textContent = `Click me (${count})`;
+
 });
 </script>
 
 <!-- BOOT -->
 <script>
 (function () {
+
   const boot = document.getElementById("boot");
   const text = document.getElementById("bootText");
-
-  if(!boot) return;
 
   if(sessionStorage.getItem("bootPlayed")){
     boot.remove();
@@ -298,7 +228,7 @@ btn.addEventListener("click", ()=>{
 
   sessionStorage.setItem("bootPlayed","true");
 
-  const msgs = [
+  const messages = [
     "INITIALIZING SESSION",
     "LOADING UI MODULES...",
     "LAUNCHING ARCADE...",
@@ -306,16 +236,28 @@ btn.addEventListener("click", ()=>{
   ];
 
   let i = 0;
+
   const interval = setInterval(()=>{
+
     i++;
-    if(i < msgs.length) text.textContent = msgs[i];
+
+    if(i < messages.length){
+      text.textContent = messages[i];
+    }
+
   }, 500);
 
   setTimeout(()=>{
+
     clearInterval(interval);
+
     boot.style.opacity = "0";
     boot.style.transition = "opacity 0.7s ease";
-    setTimeout(()=>boot.remove(),700);
+
+    setTimeout(()=>{
+      boot.remove();
+    },700);
+
   },2000);
 
 })();
