@@ -2,159 +2,349 @@
 <html>
 <head>
   <title>Archive</title>
-
+ 
   <script src="https://cdn.tailwindcss.com"></script>
-
+ 
   <!-- GLOBAL STYLES -->
   <link rel="stylesheet" href="styles/global.css">
-
+ 
   <!-- THEME SYSTEM -->
   <script src="scripts/theme.js" defer></script>
 </head>
-
+ 
 <body>
-
+ 
 <!-- SCANLINES -->
 <div class="scanlines"></div>
-
+ 
 <!-- CRT -->
 <div class="crt"></div>
-
+ 
 <!-- BOOT -->
 <div id="boot"
   class="fixed inset-0 flex items-center justify-center z-[9999]"
   style="display:none; background: var(--bg); color: var(--text);">
-
+ 
   <div class="text-center font-mono">
-
+ 
     <p id="bootText">
       LAUNCHING PORTFOLIO...
     </p>
-
+ 
     <p class="text-sm opacity-70 mt-3">
       HOST: Spencer_Feldmann
     </p>
-
+ 
   </div>
-
+ 
 </div>
-
+ 
 <!-- NAVBAR -->
 <nav class="px-6 py-5 font-mono tracking-wide"
   style="border-bottom:var(--border)">
-
+ 
   <div class="max-w-5xl mx-auto flex items-center justify-between">
-
+ 
     <a href="index.html"
       class="nav-link font-semibold"
       style="color:var(--accent)">
-
+ 
       [ HOST: Spencer_Feldmann<span class="cursor">_</span> ]
     </a>
-
+ 
     <div
       class="flex items-center gap-5 text-sm"
       style="color:var(--muted)">
-
+ 
       <a
         class="nav-link active-nav"
         href="archive.html">
-
+ 
         [ ARCHIVE ]
       </a>
-
+ 
       <a
         class="nav-link"
         href="profile.html">
-
+ 
         [ PROFILE ]
       </a>
-
+ 
       <a
         class="nav-link"
         href="arcade.html">
-
+ 
         [ ARCADE ]
       </a>
-
+ 
     </div>
-
+ 
   </div>
 </nav>
-
+ 
 <!-- CONTENT -->
-<section class="max-w-3xl mx-auto px-6 py-20">
-
-  <h1 class="text-3xl font-semibold mb-6">
+<section class="max-w-5xl mx-auto px-6 py-14">
+ 
+  <h1 class="text-3xl font-semibold mb-3">
     ARCHIVE
   </h1>
-
-  <p class="mb-8" style="color:var(--muted)">
-    Selected software work, systems projects,
-    and technical experiments.
+ 
+  <p class="mb-12" style="color:var(--muted)">
+    Selected software work, systems projects, and technical experiments.
   </p>
-
-  <!-- CARD -->
-  <div class="card p-5 rounded-xl">
-
-    <p class="font-semibold">
-      More Coming Soon
+ 
+  <!-- PROJECT HEADER -->
+  <div class="card p-6 rounded-xl mb-6">
+ 
+    <div class="flex flex-wrap items-start justify-between gap-4 mb-4">
+ 
+      <div>
+        <p class="text-xs font-mono mb-1" style="color:var(--muted)">
+          SERVICE LEARNING / INTERNSHIP · COLLEGE PARK SCHOLARS
+        </p>
+        <h2 class="text-xl font-semibold">
+          Climate Resiliency Data Workbook & Dashboards
+        </h2>
+        <p class="text-sm mt-1" style="color:var(--muted)">
+          Habitat for Humanity Metro Maryland · Data Analyst Intern
+        </p>
+      </div>
+ 
+      <div class="flex gap-2 flex-wrap">
+        <span class="text-xs font-mono px-2 py-1 rounded" style="border:var(--border); color:var(--muted)">
+          ENVIRONMENTAL JUSTICE
+        </span>
+        <span class="text-xs font-mono px-2 py-1 rounded" style="border:var(--border); color:var(--muted)">
+          SOCIAL JUSTICE
+        </span>
+        <span class="text-xs font-mono px-2 py-1 rounded" style="border:var(--border); color:var(--muted)">
+          ECONOMIC JUSTICE
+        </span>
+      </div>
+ 
+    </div>
+ 
+    <p style="color:var(--muted)" class="text-sm leading-relaxed">
+      I served as a Data Analyst Intern with Habitat for Humanity Metro Maryland, supporting their Climate
+      Resiliency Program. What began as a volunteer placement evolved into an internship-level role
+      centered on data infrastructure. The program delivers free weatherization, electrification, and solar
+      services to low-income homeowners in Montgomery and Prince George's Counties, helping families
+      reduce utility bills and lower greenhouse gas emissions.
     </p>
-
-    <p class="text-sm mt-2"
-      style="color:var(--muted)">
-
-      This section will contain full project
-      breakdowns and case studies.
-    </p>
-
+ 
   </div>
-
+ 
+  <!-- TWO COL: WHAT I DID + ETHICAL DILEMMA -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+ 
+    <div class="card p-6 rounded-xl">
+      <p class="font-semibold mb-3 text-sm" style="color:var(--accent)">
+        WHAT I DID
+      </p>
+      <ul class="text-sm space-y-3" style="color:var(--muted)">
+        <li>Built an Excel-based workbook aggregating client-level energy and emissions data across both counties, broken down by program, fuel source (electricity, oil, propane, natural gas, diesel), and household.</li>
+        <li>Designed multiple dashboards, by county, program, project type, fuel source, and an overall overview, to communicate utility savings and GHG reductions in a way that highlights equity gaps, not just totals.</li>
+        <li>Identified and surfaced a key funding disparity between counties so it is clearly visible across all dashboards and program reporting.</li>
+      </ul>
+    </div>
+ 
+    <div class="card p-6 rounded-xl">
+      <p class="font-semibold mb-3 text-sm" style="color:var(--accent)">
+        KEY ETHICAL DILEMMA
+      </p>
+      <p class="text-sm leading-relaxed" style="color:var(--muted)">
+        Montgomery County has 4 available grants; Prince George's County has only 2. This funding gap means
+        fewer families in PG County receive weatherization and electrification upgrades, even though both
+        counties are served by the same program.
+      </p>
+      <p class="text-sm leading-relaxed mt-3" style="color:var(--muted)">
+        A data justice approach makes this disparity impossible to ignore by breaking outcomes down by county
+        and demographics rather than reporting only totals. Making gaps visible is how data becomes advocacy.
+      </p>
+    </div>
+ 
+  </div>
+ 
+  <!-- DATA JUSTICE + SKILLS -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+ 
+    <div class="card p-6 rounded-xl">
+      <p class="font-semibold mb-3 text-sm" style="color:var(--accent)">
+        CONNECTION TO DATA JUSTICE
+      </p>
+      <p class="text-sm leading-relaxed" style="color:var(--muted)">
+        Energy savings data is never neutral. The way we collect and visualize it shapes who gets counted,
+        who benefits, and what counts as success. Design choices in data presentation carry moral weight,
+        what you show, how you group it, and what you leave out all have real consequences.
+      </p>
+    </div>
+ 
+    <div class="card p-6 rounded-xl">
+      <p class="font-semibold mb-3 text-sm" style="color:var(--accent)">
+        SKILLS & LEARNING
+      </p>
+      <div class="text-sm space-y-2" style="color:var(--muted)">
+        <p><span style="color:var(--text)">Technical:</span> Managing complex real-world datasets; building structured Excel workbooks; designing multiple dashboards for non-technical audiences.</p>
+        <p><span style="color:var(--text)">Professional:</span> Delivering work that matches a client's vision; staying flexible when the roadmap isn't fully visible; communicating across roles.</p>
+        <p><span style="color:var(--text)">Ethical:</span> Design choices in data presentation carry moral weight - what you show, how you group it, and what you leave out all have real consequences.</p>
+      </div>
+    </div>
+ 
+  </div>
+ 
+  <!-- POSTER IMAGE -->
+  <div class="card p-6 rounded-xl mb-6">
+    <p class="font-semibold mb-4 text-sm" style="color:var(--accent)">
+      PROJECT POSTER
+    </p>
+    <img
+      src="assets/spencer_poster_final.pptx (8.7 x 11.2 in).png"
+      alt="Spencer Feldmann Data Justice Practicum Poster - Habitat for Humanity Metro Maryland Climate Resiliency Program"
+      class="w-full rounded-lg"
+      style="border:var(--border)"
+    />
+    <p class="text-xs mt-3 text-center" style="color:var(--muted)">
+      College Park Scholars Data Justice Practicum · Service Learning / Internship
+    </p>
+  </div>
+ 
+  <!-- PHOTOS -->
+  <div class="card p-6 rounded-xl mb-6">
+    <p class="font-semibold mb-4 text-sm" style="color:var(--accent)">
+      PRESENTATION
+    </p>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+ 
+      <div>
+        <img
+          src="assets/ScholarsShowcaseAndyJess.jpeg"
+          alt="Spencer Feldmann with Andrew Fellows and Jess Feltner at the Data Justice poster presentation"
+          class="w-full rounded-lg object-cover"
+          style="border:var(--border); max-height:420px"
+        />
+        <p class="text-xs mt-2 text-center" style="color:var(--muted)">
+          With Andrew Fellows (Data Justice Program Director) and Jess Feltner (Program Advisor)
+        </p>
+      </div>
+ 
+      <div>
+        <img
+          src="assets/ScholarsShowcaseNick.jpeg"
+          alt="Spencer Feldmann with his Habitat for Humanity manager Nicholas Deak at the poster presentation"
+          class="w-full rounded-lg object-cover"
+          style="border:var(--border); max-height:420px"
+        />
+        <p class="text-xs mt-2 text-center" style="color:var(--muted)">
+          With Nicholas Deak, Manager & Head of the Climate Resiliency Program at Habitat for Humanity Metro Maryland
+        </p>
+      </div>
+ 
+    </div>
+  </div>
+ 
+  <!-- EXCEL WORKBOOK -->
+  <div class="card p-6 rounded-xl mb-6">
+    <p class="font-semibold mb-2 text-sm" style="color:var(--accent)">
+      ARTIFACTS & DELIVERABLES
+    </p>
+    <p class="text-sm mb-4" style="color:var(--muted)">
+      The primary artifact is an Excel workbook containing multiple dashboards organized by county, program,
+      project type, and fuel source - showing total utility savings and GHG reductions as well as averages
+      per client. Supporting visualizations use bar charts and summary tables designed for community-facing
+      communication, highlighting equity gaps rather than masking them.
+    </p>
+ 
+    <div class="text-sm space-y-1 mb-5" style="color:var(--muted)">
+      <p style="color:var(--text)" class="font-mono text-xs mb-2">WORKBOOK SHEETS</p>
+      <p>· <span style="color:var(--text)">EEAOP + HEECAP</span> - weatherization and electrification program data</p>
+      <p>· <span style="color:var(--text)">MEA SEE</span> - solar program data</p>
+      <p>· <span style="color:var(--text)">MEA EEE</span> - weatherization and electrification program data</p>
+      <p>· <span style="color:var(--text)">Appended Program Table</span> - combined dataset across all programs</p>
+      <p>· <span style="color:var(--text)">County Dashboard</span> - outcomes broken down by county</p>
+      <p>· <span style="color:var(--text)">Program Dashboard</span> - outcomes broken down by program</p>
+      <p>· <span style="color:var(--text)">Project Dashboard</span> - outcomes broken down by project type</p>
+      <p>· <span style="color:var(--text)">Fuel Sources Dashboard</span> - outcomes broken down by fuel source</p>
+      <p>· <span style="color:var(--text)">Overview Dashboard</span> - total utility savings and GHG reductions across all programs</p>
+      <p>· <span style="color:var(--text)">References</span> - data sources and emission factor references</p>
+    </div>
+ 
+    <a
+      href="assets/HabitatforHumanityFinalDraftEmissionsCalculatorWebsite.xlsx"
+      download
+      class="nav-link text-sm font-mono"
+      style="color:var(--accent)">
+      [ DOWNLOAD WORKBOOK (.xlsx) ]
+    </a>
+ 
+  </div>
+ 
+  <!-- CHALLENGES + IMPACT -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+ 
+    <div class="card p-6 rounded-xl">
+      <p class="font-semibold mb-3 text-sm" style="color:var(--accent)">
+        CHALLENGES & GROWTH
+      </p>
+      <div class="text-sm space-y-2" style="color:var(--muted)">
+        <p><span style="color:var(--text)">Navigating ambiguity:</span> The roadmap isn't always fully visible, which teaches adaptability over perfect planning.</p>
+        <p><span style="color:var(--text)">Professional formation:</span> Learning formatting standards and workplace norms faster than any classroom setting.</p>
+        <p><span style="color:var(--text)">Delivering for others:</span> Constantly checking that the work solves the right problem, not just building something that works for yourself.</p>
+      </div>
+    </div>
+ 
+    <div class="card p-6 rounded-xl">
+      <p class="font-semibold mb-3 text-sm" style="color:var(--accent)">
+        IMPACT & FUTURE WORK
+      </p>
+      <div class="text-sm space-y-2" style="color:var(--muted)">
+        <p>This experience reframed how I think about data: not as objective truth, but as choices with real consequences for real communities.</p>
+        <p>The dashboards can help Habitat advocate for more equitable funding, making the case with evidence, not just argument.</p>
+        <p>Going forward, I want to work at the intersection of data, policy, and equity where numbers actually matter to people's lives.</p>
+      </div>
+    </div>
+ 
+  </div>
+ 
+  <!-- ACKNOWLEDGMENTS -->
+  <div class="card p-5 rounded-xl">
+    <p class="font-semibold mb-3 text-sm" style="color:var(--accent)">
+      ACKNOWLEDGMENTS
+    </p>
+    <p class="text-sm" style="color:var(--muted)">
+      Habitat for Humanity Metro Maryland · College Park Scholars Data Justice faculty and mentors · University of Maryland
+    </p>
+    <p class="text-sm mt-2" style="color:var(--muted)">
+      Special thanks to Nicholas Deak for his constant support and hands-on guidance as manager, Sandra Limjuco for helping initiate this opportunity,
+      Andrew Fellows for being an excellent mentor and teacher, and Jess Feltner for her thoughtful advice and continued support throughout the Scholars program.
+    </p>
+  </div>
+ 
 </section>
-
-
+ 
 <!-- HUD -->
 <div id="themeBar"
-  class="fixed bottom-4 left-0 right-0 px-6 font-mono text-sm select-none">
-
+  class="fixed bottom-0 left-0 right-0 px-6 font-mono text-sm select-none"
+  style="background: var(--bg); border-top: var(--border); padding-top: 12px; padding-bottom: 12px;">
+ 
   <div class="max-w-5xl mx-auto flex items-center justify-between">
-
-    <!-- STATUS -->
+ 
     <span style="color:var(--muted)">
       > SYSTEM STATUS: ONLINE
     </span>
-
-    <!-- THEME PICKER -->
+ 
     <div>
-
-      <span class="theme-option theme-active"
-        data-theme="mono">
-        [●] MONO
-      </span>
-
-      <span class="theme-option ml-4"
-        data-theme="amber">
-        [ ] AMBER
-      </span>
-
-      <span class="theme-option ml-4"
-        data-theme="matrix">
-        [ ] MATRIX
-      </span>
-
-      <span class="theme-option ml-4"
-        data-theme="light">
-        [ ] LIGHT
-      </span>
-
+      <span class="theme-option theme-active" data-theme="mono">[●] MONO</span>
+      <span class="theme-option ml-4" data-theme="amber">[ ] AMBER</span>
+      <span class="theme-option ml-4" data-theme="matrix">[ ] MATRIX</span>
+      <span class="theme-option ml-4" data-theme="light">[ ] LIGHT</span>
     </div>
-
+ 
   </div>
-
+ 
 </div>
-
-<!-- BOOT -->
+ 
 <script src="scripts/boot.js"></script>
-
+ 
 </body>
 </html>
+ 
