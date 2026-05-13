@@ -59,7 +59,7 @@
 
       <a
         class="nav-link"
-        href="projects.html">
+        href="archive.html">
 
         [ ARCHIVE ]
 
@@ -67,7 +67,7 @@
 
       <a
         class="nav-link"
-        href="about.html">
+        href="profile.html">
 
         [ PROFILE ]
 
@@ -75,7 +75,7 @@
 
       <a
         class="nav-link active-nav"
-        href="games.html">
+        href="arcade.html">
 
         [ ARCADE ]
 
@@ -215,53 +215,7 @@ btn.addEventListener("click", ()=>{
 </script>
 
 <!-- BOOT -->
-<script>
-(function () {
-
-  const boot = document.getElementById("boot");
-  const text = document.getElementById("bootText");
-
-  if(sessionStorage.getItem("bootPlayed")){
-    boot.remove();
-    return;
-  }
-
-  boot.style.display = "flex";
-  sessionStorage.setItem("bootPlayed","true");
-
-  const messages = [
-    "LAUNCHING PORTFOLIO...",
-    "LOADING UI MODULES...",
-    "ENTERING ARCADE..."
-  ];
-
-  let i = 0;
-
-  const interval = setInterval(()=>{
-
-    i++;
-
-    if(i < messages.length){
-      text.textContent = messages[i];
-    }
-
-  }, 500);
-
-  setTimeout(()=>{
-
-    clearInterval(interval);
-
-    boot.style.opacity = "0";
-    boot.style.transition = "opacity 0.7s ease";
-
-    setTimeout(()=>{
-      boot.remove();
-    },700);
-
-  },2000);
-
-})();
-</script>
+<script src="scripts/boot.js"></script>
 
 </body>
 </html>
