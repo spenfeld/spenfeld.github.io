@@ -40,7 +40,7 @@
 
   <div class="max-w-5xl mx-auto flex items-center justify-between">
 
-    <a href="./"
+    <a href="index.html"
       class="nav-link font-semibold active-nav"
       style="color:var(--accent)">
 
@@ -150,6 +150,7 @@
 
   boot.style.display = "flex";
   sessionStorage.setItem("bootPlayed","true");
+  console.log("flag set:", sessionStorage.getItem("bootPlayed")); // ← add this
 
   const messages = [
     "LAUNCHING PORTFOLIO...",
