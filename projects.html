@@ -20,6 +20,25 @@
 <!-- CRT -->
 <div class="crt"></div>
 
+<!-- BOOT -->
+<div id="boot"
+  class="fixed inset-0 flex items-center justify-center z-[9999]"
+  style="display:none; background: var(--bg); color: var(--text);">
+
+  <div class="text-center font-mono">
+
+    <p id="bootText">
+      LAUNCHING PORTFOLIO...
+    </p>
+
+    <p class="text-sm opacity-70 mt-3">
+      HOST: Spencer_Feldmann
+    </p>
+
+  </div>
+
+</div>
+
 <!-- NAVBAR -->
 <nav class="px-6 py-5 font-mono tracking-wide"
   style="border-bottom:var(--border)">
@@ -133,6 +152,55 @@
   </div>
 
 </div>
+
+<!-- BOOT -->
+<script>
+    (function () {
+    
+      const boot = document.getElementById("boot");
+      const text = document.getElementById("bootText");
+    
+      if(sessionStorage.getItem("bootPlayed")){
+        boot.remove();
+        return;
+      }
+    
+      boot.style.display = "flex";
+      sessionStorage.setItem("bootPlayed","true");
+    
+      const messages = [
+        "LAUNCHING PORTFOLIO...",
+        "LOADING UI MODULES...",
+        "ENTERING ARCHIVES..."
+      ];
+    
+      let i = 0;
+    
+      const interval = setInterval(()=>{
+    
+        i++;
+    
+        if(i < messages.length){
+          text.textContent = messages[i];
+        }
+    
+      }, 500);
+    
+      setTimeout(()=>{
+    
+        clearInterval(interval);
+    
+        boot.style.opacity = "0";
+        boot.style.transition = "opacity 0.7s ease";
+    
+        setTimeout(()=>{
+          boot.remove();
+        },700);
+    
+      },2000);
+    
+    })();
+</script>
 
 </body>
 </html>

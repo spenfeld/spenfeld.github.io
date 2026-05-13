@@ -23,7 +23,7 @@
 <!-- BOOT -->
 <div id="boot"
   class="fixed inset-0 flex items-center justify-center z-[9999]"
-  style="background: var(--bg); color: var(--text);">
+  style="display:none; background: var(--bg); color: var(--text);">
 
   <div class="text-center font-mono">
     <p id="bootText">LAUNCHING PORTFOLIO...</p>
@@ -148,12 +148,13 @@
     return;
   }
 
+  boot.style.display = "flex";
   sessionStorage.setItem("bootPlayed","true");
 
   const messages = [
     "LAUNCHING PORTFOLIO...",
     "LOADING UI MODULES...",
-    "ENTERING SESSION..."
+    "INITIALIZING SESSION..."
   ];
 
   let i = 0;

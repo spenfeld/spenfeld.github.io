@@ -23,12 +23,12 @@
 <!-- BOOT -->
 <div id="boot"
   class="fixed inset-0 flex items-center justify-center z-[9999]"
-  style="background: var(--bg); color: var(--text);">
+  style="display:none; background: var(--bg); color: var(--text);">
 
   <div class="text-center font-mono">
 
     <p id="bootText">
-      INITIALIZING SESSION
+      LAUNCHING PORTFOLIO...
     </p>
 
     <p class="text-sm opacity-70 mt-3">
@@ -226,13 +226,13 @@ btn.addEventListener("click", ()=>{
     return;
   }
 
+  boot.style.display = "flex";
   sessionStorage.setItem("bootPlayed","true");
 
   const messages = [
-    "INITIALIZING SESSION",
+    "LAUNCHING PORTFOLIO...",
     "LOADING UI MODULES...",
-    "LAUNCHING ARCADE...",
-    "ENTERING SYSTEM"
+    "ENTERING ARCADE..."
   ];
 
   let i = 0;
