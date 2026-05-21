@@ -40,55 +40,10 @@
 </div>
 
 <!-- NAVBAR -->
-<nav class="px-6 py-5 font-mono tracking-wide"
-  style="border-bottom:var(--border)">
-
-  <div class="max-w-5xl mx-auto flex items-center justify-between">
-
-    <a href="index.html"
-      class="nav-link font-semibold"
-      style="color:var(--accent)">
-
-      [ HOST: Spencer_Feldmann<span class="cursor">_</span> ]
-
-    </a>
-
-    <div
-      class="flex items-center gap-5 text-sm"
-      style="color:var(--muted)">
-
-      <a
-        class="nav-link"
-        href="archive.html">
-
-        [ ARCHIVE ]
-
-      </a>
-
-      <a
-        class="nav-link"
-        href="profile.html">
-
-        [ PROFILE ]
-
-      </a>
-
-      <a
-        class="nav-link active-nav"
-        href="arcade.html">
-
-        [ ARCADE ]
-
-      </a>
-
-    </div>
-
-  </div>
-
-</nav>
+<div id="nav"></div>
 
 <!-- CONTENT -->
-<section class="max-w-5xl mx-auto px-6 py-14">
+<section class="max-w-5xl mx-auto px-6 py-20">
 
   <h1 class="text-3xl font-semibold mb-8">
     ARCADE
@@ -160,44 +115,7 @@
 </section>
 
 <!-- HUD -->
-<div id="themeBar"
-  class="fixed bottom-4 left-0 right-0 px-6 font-mono text-sm select-none">
-
-  <div class="max-w-5xl mx-auto flex items-center justify-between">
-
-    <!-- STATUS -->
-    <span style="color:var(--muted)">
-      > SYSTEM STATUS: ONLINE
-    </span>
-
-    <!-- THEME PICKER -->
-    <div>
-
-      <span class="theme-option theme-active"
-        data-theme="mono">
-        [●] MONO
-      </span>
-
-      <span class="theme-option ml-4"
-        data-theme="amber">
-        [ ] AMBER
-      </span>
-
-      <span class="theme-option ml-4"
-        data-theme="matrix">
-        [ ] MATRIX
-      </span>
-
-      <span class="theme-option ml-4"
-        data-theme="light">
-        [ ] LIGHT
-      </span>
-
-    </div>
-
-  </div>
-
-</div>
+<div id="hud"></div>
 
 <!-- COUNTER -->
 <script>
@@ -216,6 +134,9 @@ btn.addEventListener("click", ()=>{
 
 <!-- BOOT -->
 <script src="scripts/boot.js"></script>
+
+<!-- COMPONENTS -->
+<script src="scripts/components.js"></script>
 
 </body>
 </html>

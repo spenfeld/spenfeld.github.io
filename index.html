@@ -2,142 +2,205 @@
 <html>
 <head>
   <title>Spencer Feldmann</title>
-
+ 
   <script src="https://cdn.tailwindcss.com"></script>
-
+ 
   <!-- GLOBAL STYLES -->
   <link rel="stylesheet" href="styles/global.css">
-
+ 
   <!-- THEME SYSTEM -->
   <script src="scripts/theme.js" defer></script>
+ 
+  <style>
+    /* PORTFOLIO GRID */
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-auto-rows: minmax(300px, auto);
+      gap: 25px;
+      border: none;
+      border-radius: 12px;
+    }
+ 
+    .grid-cell {
+      border: var(--border);
+      border-radius: 12px;
+      padding: 20px 20px;
+      background: transparent;
+      transition: background 120ms ease;
+      box-shadow: var(--glow);
+    }
+ 
+    .grid-cell,
+    .grid-cell * {
+      text-shadow: var(--glow);
+    }
+ 
+    .grid-cell:hover {
+      background: rgba(255, 255, 255, 0.03);
+    }
+ 
+    .grid-cell-label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 12px;
+      color: var(--accent);
+    }
+ 
+    .grid-cell p,
+    .grid-cell ul {
+      color: var(--muted);
+      line-height: 1.6;
+    }
+ 
+    .grid-cell ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+ 
+    .grid-cell ul li::before {
+      content: "> ";
+      color: var(--accent);
+      opacity: 0.5;
+    }
+ 
+    /* SPANNING */
+    .statement     { grid-column: span 2; }
+    .featured      { grid-row: span 2; }
+    .current-focus { grid-column: span 2; }
+    .coding-langs  { grid-row: span 2; }
+    .volunteer     { grid-column: span 2; }
+  </style>
 </head>
-
+ 
 <body>
-
+ 
 <!-- SCANLINES -->
 <div class="scanlines"></div>
-
+ 
 <!-- CRT VIGNETTE -->
 <div class="crt"></div>
-
+ 
 <!-- BOOT -->
 <div id="boot"
   class="fixed inset-0 flex items-center justify-center z-[9999]"
   style="display:none; background: var(--bg); color: var(--text);">
-
+ 
   <div class="text-center font-mono">
     <p id="bootText">LAUNCHING PORTFOLIO...</p>
-
+ 
     <p class="text-sm opacity-70 mt-3">
       HOST: Spencer_Feldmann
     </p>
   </div>
 </div>
-
+ 
 <!-- NAV -->
-<nav class="px-6 py-5 font-mono tracking-wide"
-  style="border-bottom:var(--border)">
-
-  <div class="max-w-5xl mx-auto flex items-center justify-between">
-
-    <a href="index.html"
-      class="nav-link font-semibold active-nav"
-      style="color:var(--accent)">
-
-      [ HOST: Spencer_Feldmann<span class="cursor">_</span> ]
-     </a>
-
-    <div class="flex items-center gap-5 text-sm"
-      style="color:var(--muted)">
-
-      <a class="nav-link" href="archive.html">
-        [ ARCHIVE ]
-      </a>
-
-      <a class="nav-link" href="profile.html">
-        [ PROFILE ]
-      </a>
-
-      <a class="nav-link" href="arcade.html">
-        [ ARCADE ]
-      </a>
-
-    </div>
-
-  </div>
-</nav>
-
+<div id="nav"></div>
+ 
 <!-- CONTENT -->
-<section class="max-w-3xl mx-auto px-6 py-20">
-
+<section class="max-w-5xl mx-auto px-6 py-20">
+ 
   <h1 class="text-4xl font-semibold mb-6">
     Software Engineering & Economics Student
   </h1>
-
-  <p class="mb-8" style="color:var(--muted)">
+ 
+  <p class="mb-12" style="color:var(--muted)">
     Focused on full-stack development, data systems,
     and building clean software experiences.
   </p>
-
-  <!-- CARD -->
-  <div class="card p-5 rounded-xl">
-
-    <p class="font-semibold mb-2">
-      Currently
-    </p>
-
-    <p style="color:var(--muted)">
-      University of Maryland — Computer Science & Economics.
-      Experience in data systems, web development,
-      and algorithmic problem solving.
-    </p>
-
-  </div>
-
-</section>
-
-<!-- HUD -->
-<div id="themeBar"
-  class="fixed bottom-4 left-0 right-0 px-6 font-mono text-sm select-none">
-
-  <div class="max-w-5xl mx-auto flex items-center justify-between">
-
-    <!-- STATUS -->
-    <span style="color:var(--muted)">
-      > SYSTEM STATUS: ONLINE
-    </span>
-
-    <!-- THEME PICKER -->
-    <div>
-
-      <span class="theme-option theme-active"
-        data-theme="mono">
-        [●] MONO
-      </span>
-
-      <span class="theme-option ml-4"
-        data-theme="amber">
-        [ ] AMBER
-      </span>
-
-      <span class="theme-option ml-4"
-        data-theme="matrix">
-        [ ] MATRIX
-      </span>
-
-      <span class="theme-option ml-4"
-        data-theme="light">
-        [ ] LIGHT
-      </span>
-
+ 
+  <!-- PORTFOLIO GRID -->
+  <div class="portfolio-grid">
+ 
+    <!-- Row 1 -->
+    <div class="grid-cell statement">
+      <div class="grid-cell-label">STATEMENT</div>
+      <p>
+        CS + Economics student at the University of Maryland. Dean's Merit Scholar and
+        College Park Scholars - Data Justice Program. I build full-stack web apps, data
+        pipelines, and clean software experiences. Passionate about AI tools, LLMs, and
+        working at the intersection of data, policy, and real-world impact.
+      </p>
     </div>
-
+ 
+    <div class="grid-cell">
+      <div class="grid-cell-label">LINKS</div>
+      <ul>
+        <li><a href="https://github.com/spenfeld" target="_blank" style="color:var(--accent)">GitHub</a></li>
+        <li><a href="https://www.linkedin.com/in/spencer-feldmann/" target="_blank" style="color:var(--accent)">LinkedIn</a></li>
+        <li><a href="assets/resume.pdf" download target="_blank" style="color:var(--accent)">Resume</a></li>
+      </ul>
+    </div>
+ 
+    <!-- Row 2 -->
+    <div class="grid-cell featured">
+      <div class="grid-cell-label">FEATURED PROJECTS</div>
+      <ul>
+        <!-- Leave blank for now -->
+      </ul>
+    </div>
+ 
+    <div class="grid-cell current-focus">
+      <div class="grid-cell-label">CURRENT FOCUS</div>
+      <p>
+        Completing a full-stack bootcamp with Hack4Impact - building with React, Node.js,
+        Firebase, and REST APIs. Also developing an Excel-based climate resiliency dashboard
+        for Habitat for Humanity Metro Maryland, aggregating energy audit data and GHG savings
+        across Montgomery and Prince George's Counties.
+      </p>
+    </div>
+ 
+    <!-- Row 3 -->
+    <div class="grid-cell">
+      <div class="grid-cell-label">HOBBIES & INVOLVEMENTS</div>
+      <ul>
+        <li>Gymnastics</li>
+        <li>Volleyball</li>
+        <li>Reading</li>
+        <li>Drawing</li>
+        <li>Board games & card games</li>
+        <li>Habitat for Humanity - Young Professionals</li>
+        <li>Hack4Impact - Bootcamp Member</li>
+        <li>Scholars Data Justice - Peer Mentor & Ambassador</li>
+      </ul>
+    </div>
+ 
+    <div class="grid-cell coding-langs">
+      <div class="grid-cell-label">LANGUAGES & FRAMEWORKS</div>
+      <ul>
+        <li>Python, JavaScript, Java, C</li>
+        <li>React.js, Node.js, HTML/CSS</li>
+        <li>SQL, OCaml, Assembly, Rust</li>
+        <li>Firebase, Pandas, Git</li>
+        <li>Salesforce, Excel, SharePoint</li>
+      </ul>
+    </div>
+ 
+    <!-- Row 4 -->
+    <div class="grid-cell volunteer">
+      <div class="grid-cell-label">VOLUNTEER & AWARDS</div>
+      <p>
+        290+ hours with Habitat for Humanity across 9 service trips — built 2 full homes,
+        84 picnic tables, and 4 benches. Delivered a $150 grant-winning advocacy speech
+        through the Do Good Certificate program. 3rd Place in Lockheed Martin's International
+        Code Quest. 1st Place, AACC Mathematics Competition.
+      </p>
+    </div>
+ 
   </div>
-
-</div>
-
+ 
+</section>
+ 
+<!-- HUD -->
+<div id="hud"></div>
+ 
 <!-- BOOT SCRIPT -->
 <script src="scripts/boot.js"></script>
-
+ 
+<!-- COMPONENTS -->
+<script src="scripts/components.js"></script>
+ 
 </body>
 </html>
