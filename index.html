@@ -45,6 +45,7 @@
       font-weight: 600;
       margin-bottom: 12px;
       color: var(--accent);
+      font-size: 20px
     }
  
     .grid-cell p,
@@ -127,11 +128,28 @@
  
     <div class="grid-cell">
       <div class="grid-cell-label">LINKS</div>
-      <ul>
-        <li><a href="https://github.com/spenfeld" target="_blank" style="color:var(--accent)">GitHub</a></li>
-        <li><a href="https://www.linkedin.com/in/spencer-feldmann/" target="_blank" style="color:var(--accent)">LinkedIn</a></li>
-        <li><a href="assets/resume.pdf" download target="_blank" style="color:var(--accent)">Resume</a></li>
-      </ul>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+      <div style="display: flex; justify-content: space-around; align-items: flex-start; height: calc(100% - 36px); padding-top: 30px;">
+
+        <a href="https://www.linkedin.com/in/spencer-feldmann/" target="_blank"
+          style="display: flex; flex-direction: column; align-items: center; gap: 10px; color: var(--accent); text-decoration: none; transition: opacity 0.15s;">
+          <i class="fab fa-linkedin" style="font-size: 64px;"></i>
+          <span style="font-size: 11px; letter-spacing: 1px;">[ LinkedIn ]</span>
+        </a>
+      
+        <a href="https://github.com/spenfeld" target="_blank"
+          style="display: flex; flex-direction: column-reverse; align-items: center; gap: 10px; color: var(--accent); text-decoration: none; transition: opacity 0.15s; margin-top: 30px;">
+          <i class="fab fa-github" style="font-size: 64px;"></i>
+          <span style="font-size: 11px; letter-spacing: 1px;">[ GitHub ]</span>
+        </a>
+      
+        <a href="assets/resume.pdf" download target="_blank"
+          style="display: flex; flex-direction: column; align-items: center; gap: 10px; color: var(--accent); text-decoration: none; transition: opacity 0.15s;">
+          <i class="fa fa-file-alt" style="font-size: 64px;"></i>
+          <span style="font-size: 11px; letter-spacing: 1px;">[ Resume ]</span>
+        </a>
+      
+      </div>
     </div>
  
     <!-- Row 2 -->
@@ -154,30 +172,53 @@
  
     <!-- Row 3 -->
     <div class="grid-cell">
-      <div class="grid-cell-label">HOBBIES & INVOLVEMENTS</div>
+      <div class="grid-cell-label">HOBBIES & ORGS</div>
       <ul>
         <li>Gymnastics</li>
         <li>Volleyball</li>
         <li>Reading</li>
         <li>Drawing</li>
         <li>Board games & card games</li>
-        <li>Habitat for Humanity - Young Professionals</li>
-        <li>Hack4Impact - Bootcamp Member</li>
-        <li>Scholars Data Justice - Peer Mentor & Ambassador</li>
+        <!-- <li>Habitat for Humanity - Young Professionals</li> -->
+        <!-- <li>Hack4Impact - Bootcamp Member</li> -->
+        <!-- <li>Scholars Data Justice - Peer Mentor & Ambassador</li> -->
       </ul>
     </div>
  
-    <div class="grid-cell coding-langs">
-      <div class="grid-cell-label">LANGUAGES & FRAMEWORKS</div>
-      <ul>
-        <li>Python, JavaScript, Java, C</li>
-        <li>React.js, Node.js, HTML/CSS</li>
-        <li>SQL, OCaml, Assembly, Rust</li>
-        <li>Firebase, Pandas, Git</li>
-        <li>Salesforce, Excel, SharePoint</li>
-      </ul>
+    <div class="grid-cell coding-langs" style="display: flex; flex-direction: column;">
+      <div class="grid-cell-label">LANGUAGES</div>
+      
+      <div id="lang-bars" style="display: flex; flex-direction: column; justify-content: space-between; flex: 1; padding-top: 12px;"></div>
+      
+      <script>
+        const langs = [
+          { name: 'Python',     years: 6, max: 6 },
+          { name: 'Java',       years: 6, max: 6 },
+          { name: 'SQL',        years: 4, max: 6 },
+          { name: 'C',          years: 2, max: 6 },
+          { name: 'OCaml',      years: 2, max: 6 },
+          { name: 'JavaScript', years: 1, max: 6 },
+          { name: 'HTML/CSS', years: 1, max: 6 },
+        ];
+    
+        const seg = (filled) => `
+          <div style="width:16px; height:40px; border:1px solid var(--accent); border-radius:2px;
+            background:${filled ? 'var(--accent)' : 'transparent'}; opacity:${filled ? '1' : '0.15'};">
+          </div>`;
+    
+        document.getElementById('lang-bars').innerHTML = langs.map(l => `
+          <div style="display:flex; align-items:center; gap:20px;">
+            <div style="width:80px; flex-shrink:0;">
+              <span style="font-size:15px; color:var(--accent); display:block; text-align:center;">${l.name}</span>
+              <span style="font-size:13px; color:var(--muted); display:block; text-align:center;">${l.years} Years</span>
+            </div>
+            <div style="display:flex; gap:8px;">
+              ${Array.from({length: l.max}, (_, i) => seg(i < l.years)).join('')}
+            </div>
+          </div>
+        `).join('');
+      </script>
     </div>
- 
     <!-- Row 4 -->
     <div class="grid-cell volunteer">
       <div class="grid-cell-label">VOLUNTEER & AWARDS</div>
