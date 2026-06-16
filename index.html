@@ -116,15 +116,105 @@
   <div class="portfolio-grid">
  
     <!-- Row 1 -->
-    <div class="grid-cell statement">
-      <div class="grid-cell-label">STATEMENT</div>
-      <p>
-        CS + Economics student at the University of Maryland. Dean's Merit Scholar and
-        College Park Scholars - Data Justice Program. I build full-stack web apps, data
-        pipelines, and clean software experiences. Passionate about AI tools, LLMs, and
-        working at the intersection of data, policy, and real-world impact.
-      </p>
+    <div class="grid-cell statement" style="display: flex; flex-direction: column;">
+      <div class="grid-cell-label">PERSONNEL FILE</div>
+    
+      <div style="display: flex; gap: 0; align-items: stretch; flex: 1;">
+    
+        <div style="flex: 2; padding-right: 24px; display: flex; flex-direction: column; justify-content: center; gap: 12px;">
+          <div style="font-size: 12px;">
+            <span style="color: var(--muted); letter-spacing: 1px;">SCHOOL: </span>
+            <span style="color: var(--accent);">University of Maryland</span>
+          </div>
+          <div style="font-size: 12px;">
+            <span style="color: var(--muted); letter-spacing: 1px;">DEGREE: </span>
+            <span style="color: var(--accent);">B.S. Computer Science · B.A. Economics</span>
+          </div>
+          <div style="font-size: 12px;">
+            <span style="color: var(--muted); letter-spacing: 1px;">MINOR: </span>
+            <span style="color: var(--accent);">Rhetoric</span>
+          </div>
+          <div style="font-size: 12px;">
+            <span style="color: var(--muted); letter-spacing: 1px;">SCHOLARS: </span>
+            <span style="color: var(--accent);">Data Justice — Inaugural Cohort</span>
+          </div>
+          <div style="font-size: 12px;">
+            <span style="color: var(--muted); letter-spacing: 1px;">YEAR: </span>
+            <span style="color: var(--accent);">Junior · Class of 2028</span>
+          </div>
+          <div style="font-size: 12px;">
+            <span style="color: var(--muted); letter-spacing: 1px;">ROLES: </span>
+            <span style="color: var(--accent);">SWE · AI/ML · Data Analytics</span>
+          </div>
+          <div style="font-size: 12px;">
+            <span style="color: var(--muted); letter-spacing: 1px;">AVAILABLE: </span>
+            <span style="color: var(--accent);">Fall 2026</span>
+          </div>
+    
+          <!--
+            <hr style="border: none; border-top: 1px solid var(--muted); opacity: 0.3; margin: 14px 0;">
+    
+            <div style="color: var(--muted); font-size: 11px; line-height: 1.7;">
+              Passionate about AI tools, LLMs, and working at the intersection of data, policy, and real-world impact.
+            </div>
+          -->
+        </div>
+    
+        <div style="width: 1px; background: var(--muted); opacity: 0.3; margin: 0 4px;"></div>
+    
+        <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; padding-left: 24px; gap: 8px; position: relative;">
+    
+          <div style="position: absolute; left: 12px; top: 0; bottom: 0; width: 3px; background: var(--accent); opacity: 0.4; border-radius: 2px;"></div>
+    
+          <div style="font-size: 10px; color: var(--muted); letter-spacing: 1px; text-align: center;">
+            CODENAME: <span style="color: var(--accent);">Spencer Feldmann</span>
+          </div>
+    
+          <div style="position: relative; width: 110px; height: 110px; display: flex; justify-content: center; align-items: center;">
+            <div style="position: absolute; top: 0; left: 0; width: 16px; height: 16px; border-top: 2px solid var(--accent); border-left: 2px solid var(--accent);"></div>
+            <div style="position: absolute; top: 0; right: 0; width: 16px; height: 16px; border-top: 2px solid var(--accent); border-right: 2px solid var(--accent);"></div>
+            <div style="position: absolute; bottom: 0; right: 0; width: 16px; height: 16px; border-bottom: 2px solid var(--accent); border-right: 2px solid var(--accent);"></div>
+            <div style="position: absolute; bottom: 0; left: 0; width: 16px; height: 16px; border-bottom: 2px solid var(--accent); border-left: 2px solid var(--accent);"></div>
+            <svg viewBox="0 0 100 110" width="80" height="80" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="var(--accent)" stroke-width="5" stroke-linecap="round">
+              <circle cx="50" cy="35" r="22"/>
+              <path d="M5 105 Q5 75 50 75 Q95 75 95 105"/>
+            </svg>
+          </div>
+    
+          <div style="font-size: 10px; color: var(--muted); letter-spacing: 1px; text-align: center;">
+            DESIGNATION: <span style="color: var(--accent);">DEVELOPER</span>
+          </div>
+    
+          <!--<div style="font-size: 9px; color: var(--muted); opacity: 0.6; letter-spacing: 1px; text-align: center;">ISSUED: 2021 · EXPIRES: 2026</div>-->
+    
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 3px;">
+            <svg id="barcode-svg" width="160" height="32" xmlns="http://www.w3.org/2000/svg"></svg>
+            <div style="font-size: 7px; color: var(--muted); opacity: 0.6; letter-spacing: 2px;">SF 2024 001 0082</div>
+          </div>
+    
+        </div>
+    
+      </div>
     </div>
+    
+    <script>
+      const bars = [3,1,2,1,4,1,2,3,1,2,1,3,2,1,4,1,2,1,3,1,2,4,1,2,1,3,1,2,1,4,2,1,3,1,2,1,4,1,2,3,1,2,1,3,2,1,2,1,4,1,2,1,3,2,1,4,1,2,1,3,1,2,3,1,4,1,2,1,3,2,1,3,1,2,4,1,2,1,3,1,2,1,4,2,1,3,1,2,3,1,2,1,3,1];
+      const svg = document.getElementById('barcode-svg');
+      let x = 0;
+      bars.forEach((w, i) => {
+        if (i % 2 === 0) {
+          const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+          rect.setAttribute('x', x);
+          rect.setAttribute('y', 0);
+          rect.setAttribute('width', w);
+          rect.setAttribute('height', 32);
+          rect.setAttribute('fill', 'var(--accent)');
+          rect.setAttribute('opacity', '0.5');
+          svg.appendChild(rect);
+        }
+        x += w;
+      });
+    </script>
  
     <div class="grid-cell">
       <div class="grid-cell-label">LINKS</div>
