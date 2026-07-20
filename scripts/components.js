@@ -56,3 +56,26 @@ document.querySelectorAll("#nav .nav-link").forEach(link => {
   }
 });
  
+
+
+const DEBUG = true;
+
+if (DEBUG) {
+  const observer = new ResizeObserver(entries => {
+    entries.forEach(entry => {
+      const { width, height } = entry.contentRect;
+      const el = entry.target;
+      const is2wide = el.classList.contains('statement') || el.classList.contains('current-focus') || el.classList.contains('volunteer');
+      const is2tall = el.classList.contains('featured') || el.classList.contains('coding-langs');
+
+      const maxW = is2wide ? 642 : 309;
+      const maxH = is2tall ? 625 : 300;
+
+      if (Math.round(width) > maxW || Math.round(height) > maxH) {
+        console.warn(`⚠️ OVERFLOW: ${el.className} → ${Math.round(width)}x${Math.round(height)} (max ${maxW}x${maxH})`);
+      }
+    });
+  });
+
+  document.querySelectorAll('.grid-cell').forEach(cell => observer.observe(cell));
+}
