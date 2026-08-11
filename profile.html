@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Profile</title>
+  <title>Profile — Spencer Feldmann</title>
 
   <script src="https://cdn.tailwindcss.com"></script>
 
@@ -10,6 +10,153 @@
 
   <!-- THEME SYSTEM -->
   <script src="scripts/theme.js" defer></script>
+
+  <style>
+    /* Footer has no z-index of its own (site-wide, in components.js),
+       so it defaults to stacking below anything with an explicit
+       z-index — including our dots/ghost/pacman. Fix it here; ideally
+       this same rule should move into components.js/global.css so
+       every page benefits, not just this one. */
+    #themeBar {
+      z-index: 20;
+    }
+
+    /* CARD SYSTEM (matches index.html) */
+    .grid-cell {
+      border: var(--border);
+      border-radius: 12px;
+      padding: 24px 24px;
+      background: transparent;
+      box-shadow: var(--glow);
+    }
+
+    .grid-cell,
+    .grid-cell * {
+      text-shadow: var(--glow);
+    }
+
+    .grid-cell-label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 16px;
+      color: var(--accent);
+      font-size: 20px;
+    }
+
+    /* TIMELINE WRAP — the track runs through the whitespace between boxes,
+       it is not its own bordered section. Coordinates are measured in JS
+       from the actual rendered box positions, so this stays correct
+       regardless of theme, font metrics, or viewport width. */
+    #timeline-wrap {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 34px;
+      margin-bottom: 60px;
+      opacity: 0;
+      transition: opacity 250ms ease;
+    }
+
+    #timeline-wrap.settled {
+      opacity: 1;
+    }
+
+    #track-svg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      overflow: visible;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    #track-path {
+      fill: none;
+      stroke: var(--muted);
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-dasharray: 1 8;
+      opacity: 0.5;
+    }
+
+    /* BIO sits up top and stops short of the right edge, leaving a gutter
+       for the track's first vertical run. Same width as the lower boxes —
+       just shifted left (no indent) so the two create mirrored gutters. */
+    #bio-box {
+      position: relative;
+      z-index: 1;
+      width: 83%;
+      box-sizing: border-box;
+      overflow: auto;
+    }
+
+    /* Lower boxes are indented so the vertical rail runs to their left. */
+    #lower-boxes {
+      position: relative;
+      z-index: 1;
+      width: 83%;
+      margin-left: 17%;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    #lower-boxes > .grid-cell {
+      box-sizing: border-box;
+    }
+
+    #personality-box {
+      padding-bottom: 64px;
+    }
+
+    .track-dot {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: var(--glow);
+      transform: translate(-50%, -50%);
+      z-index: 1;
+      transition: opacity 200ms ease, transform 200ms ease;
+    }
+
+    .track-dot.eaten {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.3);
+    }
+
+    #pacman, #ghost {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 40px;
+      height: 40px;
+      transform: translate(-50%, -50%);
+      z-index: 2;
+      transition: none;
+    }
+
+    #ghost { z-index: 1; opacity: 0.9; }
+
+    #pacman-body { fill: var(--accent); }
+    #ghost-body { fill: var(--accent2); }
+    #ghost-eye-l, #ghost-eye-r { fill: var(--bg); }
+    #ghost-mouth { fill: none; stroke: var(--bg); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+
+    #info-box {
+      color: var(--accent);
+      text-align: center;
+    }
+
+    #info-box-text {
+      font-size: 14px;
+      letter-spacing: 0.3px;
+    }
+  </style>
 </head>
 
 <body>
@@ -24,99 +171,105 @@
 <div id="boot"
   class="fixed inset-0 flex items-center justify-center z-[9999]"
   style="display:none; background: var(--bg); color: var(--text);">
-
   <div class="text-center font-mono">
-
-    <p id="bootText">
-      LAUNCHING PORTFOLIO...
-    </p>
-
-    <p class="text-sm opacity-70 mt-3">
-      HOST: Spencer_Feldmann
-    </p>
-
+    <p id="bootText">LAUNCHING PORTFOLIO...</p>
+    <p class="text-sm opacity-70 mt-3">HOST: Spencer_Feldmann</p>
   </div>
+</div>
 
-</div> 
-
-
-<!-- NAVBAR -->
+<!-- NAV -->
 <div id="nav"></div>
 
 <!-- CONTENT -->
-<section class="max-w-3xl mx-auto px-6 py-20">
+<section class="max-w-5xl mx-auto px-6 py-20">
 
-  <h1 class="text-3xl font-semibold mb-6">
-    PROFILE
-  </h1>
+  <h1 class="text-3xl font-semibold mb-10">PROFILE</h1>
 
-  <p class="mb-8" style="color:var(--muted)">
-    Computer Science & Economics student at the University of Maryland
-    focused on systems, data, and software engineering.
-  </p>
+  <div id="timeline-wrap">
 
-  <!-- EDUCATION -->
-  <div class="card p-5 rounded-xl mb-6">
+    <!-- TRACK LINE -->
+    <svg id="track-svg">
+      <path id="track-path" />
+    </svg>
 
-    <p class="font-semibold mb-3">
-      EDUCATION
-    </p>
+    <!-- BIO -->
+    <div id="bio-box" class="grid-cell">
+      <div class="grid-cell-label">BIO</div>
+      <p style="color: var(--muted); line-height: 1.7; font-size: 15px;">
+        Computer Science and Economics student at the University of Maryland,
+        Class of 2028. Focused on full-stack development, data systems, and
+        building software that solves real problems. Targeting SWE, AI/ML, and
+        Data Analytics roles, available Fall 2026.
+      </p>
+    </div>
 
-    <p style="color:var(--muted)">
-      University of Maryland - Computer Science + Economics<br/>
-      Minor: Business Analytics + Rhetoric | Dean’s Merit Scholar
-    </p>
-
-  </div>
-
-  <!-- EXPERIENCE -->
-  <div class="card p-5 rounded-xl">
-
-    <p class="font-semibold mb-5">
-      EXPERIENCE
-    </p>
-
-    <div class="space-y-5">
-
-      <div>
-        <p class="font-semibold">
-          Habitat for Humanity — Data Analyst Intern
-        </p>
-
-        <p class="text-sm mt-1"
-          style="color:var(--muted)">
-
-          Built Excel tools for emissions estimation
-          and structured data workflows.
-        </p>
+    <!-- LOWER BOXES -->
+    <div id="lower-boxes">
+      <div id="info-box" class="grid-cell">
+        <div id="info-box-text">&gt; 2006 - HOST CREATED &middot; Brought Into This World &middot; Use [ &#8593; &#8595; &#8592; &#8594; ] To Navigate</div>
       </div>
 
-      <div>
-        <p class="font-semibold">
-          Innovative Healthware Services — Intern
-        </p>
-
-        <p class="text-sm mt-1"
-          style="color:var(--muted)">
-
-          Consolidated datasets, fixed system issues,
-          and improved reporting pipelines.
+      <div id="personality-box" class="grid-cell">
+        <div class="grid-cell-label">PERSONALITY &amp; INTERESTS</div>
+        <p style="color: var(--muted); font-size: 14px; opacity: 0.7;">
+          Coming soon.
         </p>
       </div>
+    </div>
 
-      <div>
-        <p class="font-semibold">
-          Lenhart Traffic Consulting — Intern
-        </p>
+    <!-- DOTS injected here by JS -->
+    <div id="dots-layer" style="position: absolute; top: 0; left: 0;"></div>
 
-        <p class="text-sm mt-1"
-          style="color:var(--muted)">
+    <!-- GHOST (frightened/vulnerable sprite) -->
+    <div id="ghost">
+      <svg viewBox="-14 -20 28 34" width="40" height="40">
+        <defs>
+          <clipPath id="ghost-clip">
+            <path d="
+              M -14 10
+              L -14 -6
+              A 14 14 0 0 1 14 -6
+              L 14 10
+              L 9.3 3
+              L 4.7 10
+              L 0 3
+              L -4.7 10
+              L -9.3 3
+              Z" />
+          </clipPath>
+        </defs>
+        <path id="ghost-body" d="
+          M -14 10
+          L -14 -6
+          A 14 14 0 0 1 14 -6
+          L 14 10
+          L 9.3 3
+          L 4.7 10
+          L 0 3
+          L -4.7 10
+          L -9.3 3
+          Z" />
+        <circle id="ghost-eye-l" cx="-5" cy="-8" r="2.6" />
+        <circle id="ghost-eye-r" cx="5" cy="-8" r="2.6" />
+        <path id="ghost-mouth" clip-path="url(#ghost-clip)" d="
+          M -9 -2
+          Q -7.2 -3.5 -5.4 -2
+          Q -3.6 -0.5 -1.8 -2
+          Q 0 -3.5 1.8 -2
+          Q 3.6 -0.5 5.4 -2
+          Q 7.2 -3.5 9 -2" />
+      </svg>
+    </div>
 
-          Supported modeling and engineering
-          workflow improvements.
-        </p>
-      </div>
-
+    <!-- PAC-MAN -->
+    <div id="pacman">
+      <svg viewBox="-14 -14 28 28" width="40" height="40">
+        <path id="pacman-body" d="
+          M 0 0
+          L 11.47 -8.03
+          A 14 14 0 1 0 11.47 8.03
+          Z" />
+      </svg>
     </div>
 
   </div>
@@ -131,6 +284,414 @@
 
 <!-- COMPONENTS -->
 <script src="scripts/components.js"></script>
+
+<!-- PAC-MAN TRACK LAYOUT (static — movement logic comes next) -->
+<script>
+(function () {
+  const wrap = document.getElementById('timeline-wrap');
+  const svg = document.getElementById('track-svg');
+  const path = document.getElementById('track-path');
+  const bioBox = document.getElementById('bio-box');
+  const lowerBoxes = document.getElementById('lower-boxes');
+  const dotsLayer = document.getElementById('dots-layer');
+  const pacman = document.getElementById('pacman');
+  const ghost = document.getElementById('ghost');
+
+  const DOT_COUNT = 13;
+  const DOT_SPAN = 0.92; // dots occupy the first 92% of the path; ghost owns the tail
+
+  // Indices that are permanently hidden. Positions for every dot are still
+  // computed normally (so nothing else shifts) — a skipped index just
+  // never gets a DOM element created for it. Index 0 is Pac-Man's own
+  // starting position, so it's redundant with him being there.
+  const SKIP_DOTS = new Set([0]);
+
+  // Placeholder copy for each of the 13 stops — locked order, rough text
+  // to be finalized later. Index 0 matches the default info-box text
+  // (Pac-Man starts there, so it never needs to be "eaten").
+  const DOT_CONTENT = [
+    '> 2006 - HOST CREATED · Brought Into This World · Use [ ↑ ↓ ← → ] To Navigate',
+    '> 2015 - TECH CAMPS · First exposure to programming and robotics through summer camps.',
+    '> 2018 - TAEKWONDO BLACK BELT · Martial arts training and the discipline it built.',
+    '> 2019 - AP COMPUTER SCIENCE · First formal programming coursework, where it really started.',
+    '> 2022 - RIDE ENTERTAINMENT · My first internship, surveying thrill rides at Six Flags.',
+    '> 2022 - LASER TAG PROJECT · Built a stats tracker - the project that hooked me on code.',
+    '> 2023 - HABITAT FOR HUMANITY · Volunteered on an 8-day Habitat home build.',
+    '> 2024 - LOCKHEED CODE QUEST · Captained a team to 3rd place in a coding competition.',
+    '> 2024 - UNIVERSITY OF MARYLAND · Pursuing CS + Economics, Class of 2028.',
+    '> 2026 - HABITAT INTERNSHIP · Data Analyst Intern estimating energy and GHG savings.',
+    '> 2026 - HACK4IMPACT · Completed a full-stack bootcamp, prepping for nonprofit software creation.',
+    '> 2026 - SCHOLARS LLP · Completed the Data Justice cohort as Peer Mentor and Ambassador.',
+    '> 2026 - CLAIMSBRIDGE · Building automated tests for a health claims platform.'
+  ];
+
+  // Shown when the ghost is reached, instead of a dot's content — the
+  // "future goal" text is still undecided, so this is a placeholder.
+  const GHOST_CONTENT = '> THE FUTURE · Still being written.';
+
+  const infoBox = document.getElementById('info-box-text');
+
+  // Pac-Man's position is stored as a FRACTION of the total path length
+  // (0 to 1), not raw pixels — that way it stays correct proportionally
+  // even after layout() recomputes the track on resize, when total path
+  // length itself changes.
+  let pacPosFrac = 0;
+  let dotFractions = []; // set by placeDots() each layout pass
+  const eatenDots = new Set(SKIP_DOTS); // dot 0 is pre-eaten (Pac-Man starts there)
+  let ghostEaten = false; // ghost hides once Pac-Man reaches the end, reappears on rewind
+  const pressedKeys = new Set();
+  const MOVE_FRAC_PER_SEC = 0.2;   // full path traversal takes ~5s at full speed
+  const EAT_RADIUS_FRAC = 0.02;    // how close (as a fraction of path length) counts as "reached"
+
+  // ---- ADJUST THESE TO CONTROL SIZING ----
+  const TOP_INSET = 14;             // gap between the very top of the wrap and where the track line starts
+  const INDENT_FRACTION = 0.17;     // must match #lower-boxes margin-left in the CSS above
+  // -----------------------------------------
+
+  // Settle detection: the wrap starts hidden (opacity:0, see CSS) and only
+  // fades in once two consecutive layout() runs agree on the measurements
+  // that matter (lower boxes' height, wrap's width). This avoids visibly
+  // showing the wrong position while retries are still catching up with
+  // whatever's loading asynchronously (Tailwind's CDN script, theme.js,
+  // etc.) — the layout just appears once, already correct.
+  let lastSignature = null;
+
+  // Geometry of the current track, set by layout() and consumed by
+  // placeDots(). Keeping these as real corner coordinates (rather than
+  // re-deriving them from the SVG path string) is what lets placeDots()
+  // snap dots exactly onto the two corners instead of relying on luck.
+  let trackGeo = null;
+
+  function layout() {
+    // Bio box's height is matched to the lower boxes' combined natural
+    // height (info box + gap + personality box). Reset first so we're
+    // always measuring the lower boxes' true content height, not a
+    // previously-applied match.
+    bioBox.style.height = 'auto';
+    const lowerNaturalHeight = lowerBoxes.getBoundingClientRect().height;
+    bioBox.style.height = lowerNaturalHeight + 'px';
+
+    // The horizontal gap (bio/lower boxes are offset by INDENT_FRACTION of the
+    // wrap's width) becomes the single source of truth for spacing — the
+    // vertical gap around the turn line is set to match it exactly.
+    const wrapWidth = wrap.getBoundingClientRect().width;
+    const horizontalGap = wrapWidth * INDENT_FRACTION;
+
+    const signature = `${Math.round(lowerNaturalHeight)}:${Math.round(wrapWidth)}`;
+    if (!wrap.classList.contains('settled')) {
+      if (signature === lastSignature) {
+        wrap.classList.add('settled');
+      }
+      lastSignature = signature;
+    }
+
+    wrap.style.gap = horizontalGap + 'px';
+
+    const wrapRect = wrap.getBoundingClientRect();
+    const bioRect = bioBox.getBoundingClientRect();
+    const lowerRect = lowerBoxes.getBoundingClientRect();
+
+    const toLocal = (r) => ({
+      left: r.left - wrapRect.left,
+      right: r.right - wrapRect.left,
+      top: r.top - wrapRect.top,
+      bottom: r.bottom - wrapRect.top
+    });
+
+    const bio = toLocal(bioRect);
+    const lower = toLocal(lowerRect);
+
+    // top vertical run: centered between bio's right edge and the lower box's right edge
+    const xRight = (bio.right + lower.right) / 2;
+    // bottom vertical run: centered between the lower box's left edge and bio's left edge
+    const xLeft = (lower.left + bio.left) / 2;
+
+    const yTop = TOP_INSET;
+    const yTurn = bio.bottom + (horizontalGap / 2);
+    const yBottom = lower.bottom;
+
+    svg.setAttribute('width', wrapRect.width);
+    svg.setAttribute('height', wrapRect.height);
+    svg.setAttribute('viewBox', `0 0 ${wrapRect.width} ${wrapRect.height}`);
+
+    path.setAttribute('d', `M ${xRight} ${yTop} L ${xRight} ${yTurn} L ${xLeft} ${yTurn} L ${xLeft} ${yBottom}`);
+
+    trackGeo = { xRight, xLeft, yTop, yTurn, yBottom };
+
+    placeDots();
+  }
+
+  function placeDots() {
+    dotsLayer.innerHTML = '';
+    if (!trackGeo) return;
+
+    const { yTop, yTurn, xRight, xLeft } = trackGeo;
+    const total = path.getTotalLength();
+
+    // Real segment lengths, straight from the corner coordinates —
+    // this is what lets us find each corner's exact arc-length position
+    // to snap a dot onto it.
+    const seg1Len = yTurn - yTop;        // top vertical run
+    const seg2Len = xRight - xLeft;      // horizontal turn
+    const corner1At = seg1Len;             // top-run -> turn
+    const corner2At = seg1Len + seg2Len;   // turn -> bottom-run
+
+    const spanLen = total * DOT_SPAN; // dots live in the first 92% of the path
+
+    // Start from plain uniform spacing (same rhythm as before — this is
+    // what already looked right on the top run and the horizontal run),
+    // then nudge only the single closest dot on each side to sit exactly
+    // on the corner. This preserves the even pitch everywhere instead of
+    // re-deriving per-segment counts, which is what previously made the
+    // bottom-left run denser than the other two.
+    const lengths = Array.from({ length: DOT_COUNT }, (_, i) => (i / (DOT_COUNT - 1)) * spanLen);
+
+    function snapNearestTo(targetLen) {
+      if (targetLen > spanLen) return; // corner falls outside the dot span, nothing to snap
+      let closestIdx = 0;
+      let closestDist = Infinity;
+      lengths.forEach((len, i) => {
+        const d = Math.abs(len - targetLen);
+        if (d < closestDist) { closestDist = d; closestIdx = i; }
+      });
+      lengths[closestIdx] = targetLen;
+    }
+
+    snapNearestTo(corner1At);
+    snapNearestTo(corner2At);
+
+    // Store as fractions of the total path so movement/eating logic
+    // stays correct across resizes, when `total` itself changes.
+    dotFractions = lengths.map((len) => len / total);
+
+    lengths.forEach((len, i) => {
+      if (SKIP_DOTS.has(i)) return;
+      const pt = path.getPointAtLength(len);
+      const dot = document.createElement('div');
+      dot.className = 'track-dot';
+      if (eatenDots.has(i)) dot.classList.add('eaten');
+      dot.style.left = pt.x + 'px';
+      dot.style.top = pt.y + 'px';
+      dot.dataset.index = i;
+      dotsLayer.appendChild(dot);
+    });
+
+    // ghost at the very end of the path
+    const ghostPt = path.getPointAtLength(total);
+    ghost.style.left = ghostPt.x + 'px';
+    ghost.style.top = (ghostPt.y - 4) + 'px';
+
+    // Re-place Pac-Man at his current (fractional) position rather than
+    // resetting him to the start — layout() runs on every resize, and a
+    // resize mid-walk shouldn't snap him back to the beginning.
+    updatePacmanVisual();
+  }
+
+  function updatePacmanVisual() {
+    const total = path.getTotalLength();
+    const clamped = Math.max(0, Math.min(1, pacPosFrac));
+    const pt = path.getPointAtLength(clamped * total);
+    pacman.style.left = pt.x + 'px';
+    pacman.style.top = pt.y + 'px';
+  }
+
+  function setPacmanRotation(deg) {
+    pacman.style.transform = `translate(-50%, -50%) rotate(${deg}deg)`;
+  }
+
+  function eatNearbyDots() {
+    let changed = false;
+    dotFractions.forEach((frac, i) => {
+      if (eatenDots.has(i)) return;
+      if (Math.abs(pacPosFrac - frac) <= EAT_RADIUS_FRAC) {
+        eatenDots.add(i);
+        const dotEl = dotsLayer.querySelector(`.track-dot[data-index="${i}"]`);
+        if (dotEl) dotEl.classList.add('eaten');
+        changed = true;
+      }
+    });
+    return changed;
+  }
+
+  // Moving backward "rewinds" — any dot Pac-Man backs up past reappears,
+  // same as if he'd never reached it.
+  function unEatDotsAhead() {
+    let changed = false;
+    eatenDots.forEach((i) => {
+      if (SKIP_DOTS.has(i)) return; // dot 0 is permanently gone, never comes back
+      const frac = dotFractions[i];
+      if (frac === undefined) return;
+      if (frac - pacPosFrac > EAT_RADIUS_FRAC) {
+        eatenDots.delete(i);
+        const dotEl = dotsLayer.querySelector(`.track-dot[data-index="${i}"]`);
+        if (dotEl) dotEl.classList.remove('eaten');
+        changed = true;
+      }
+    });
+    return changed;
+  }
+
+  // Info box always reflects the most recently reached dot that's still
+  // eaten and at or behind Pac-Man's current position — recomputed after
+  // eating OR un-eating, so rewinding naturally reverts the text too.
+  function updateInfoBoxForPosition() {
+    if (!infoBox) return;
+    let bestIndex = 0;
+    let bestFrac = -Infinity;
+    eatenDots.forEach((i) => {
+      const frac = SKIP_DOTS.has(i) ? -1 : dotFractions[i];
+      if (frac === undefined) return;
+      if (frac <= pacPosFrac + EAT_RADIUS_FRAC && frac > bestFrac) {
+        bestFrac = frac;
+        bestIndex = i;
+      }
+    });
+    if (DOT_CONTENT[bestIndex]) {
+      infoBox.textContent = DOT_CONTENT[bestIndex];
+    }
+  }
+
+  // Ghost behaves like the dots: reaching the end hides it, backing away
+  // from the end brings it back. A small hysteresis gap between the two
+  // thresholds stops it flickering if he holds still right at the edge.
+  function updateGhostVisibility() {
+    if (!ghostEaten && pacPosFrac >= 1 - EAT_RADIUS_FRAC) {
+      ghostEaten = true;
+      ghost.style.opacity = '0';
+      if (infoBox) infoBox.textContent = GHOST_CONTENT;
+    } else if (ghostEaten && pacPosFrac < 1 - EAT_RADIUS_FRAC * 2) {
+      ghostEaten = false;
+      ghost.style.opacity = '0.9';
+      updateInfoBoxForPosition(); // rewinding away from the ghost restores the last real dot's text
+    }
+  }
+
+  function computeMove(frac, corner1Frac, corner2Frac, dt) {
+    // Small tolerance for "sitting exactly at a corner" — floating point
+    // means frac rarely lands on the corner value bit-for-bit.
+    const CORNER_EPS = 0.0008;
+    const atCorner1 = Math.abs(frac - corner1Frac) < CORNER_EPS;
+    const atCorner2 = Math.abs(frac - corner2Frac) < CORNER_EPS;
+
+    // At a corner, BOTH the "continue forward into the next segment" key
+    // and the "go back into the segment just left" key are honored —
+    // this is what lets you reverse with Up/Down immediately at a turn
+    // instead of needing to nudge sideways first.
+    if (atCorner1) {
+      if (pressedKeys.has('ArrowLeft')) return { delta: MOVE_FRAC_PER_SEC * dt, rot: 180, min: corner1Frac, max: corner2Frac };
+      if (pressedKeys.has('ArrowUp')) return { delta: -MOVE_FRAC_PER_SEC * dt, rot: 90, min: 0, max: corner1Frac };
+      return null;
+    }
+    if (atCorner2) {
+      if (pressedKeys.has('ArrowDown')) return { delta: MOVE_FRAC_PER_SEC * dt, rot: 90, min: corner2Frac, max: 1 };
+      if (pressedKeys.has('ArrowRight')) return { delta: -MOVE_FRAC_PER_SEC * dt, rot: 180, min: corner1Frac, max: corner2Frac };
+      return null;
+    }
+
+    // Mid-segment: normal single-axis controls, clamped to that
+    // segment's own range so forward movement stops exactly at the next
+    // corner instead of drifting past it.
+    if (frac < corner1Frac) {
+      if (pressedKeys.has('ArrowDown')) return { delta: MOVE_FRAC_PER_SEC * dt, rot: 90, min: 0, max: corner1Frac };
+      if (pressedKeys.has('ArrowUp')) return { delta: -MOVE_FRAC_PER_SEC * dt, rot: 90, min: 0, max: corner1Frac };
+      return null;
+    }
+    if (frac < corner2Frac) {
+      if (pressedKeys.has('ArrowLeft')) return { delta: MOVE_FRAC_PER_SEC * dt, rot: 180, min: corner1Frac, max: corner2Frac };
+      if (pressedKeys.has('ArrowRight')) return { delta: -MOVE_FRAC_PER_SEC * dt, rot: 180, min: corner1Frac, max: corner2Frac };
+      return null;
+    }
+    if (pressedKeys.has('ArrowDown')) return { delta: MOVE_FRAC_PER_SEC * dt, rot: 90, min: corner2Frac, max: 1 };
+    if (pressedKeys.has('ArrowUp')) return { delta: -MOVE_FRAC_PER_SEC * dt, rot: 90, min: corner2Frac, max: 1 };
+    return null;
+  }
+
+  let lastTickTime = null;
+
+  function tick(now) {
+    if (trackGeo) {
+      const corner1At = trackGeo.yTurn - trackGeo.yTop;
+      const corner2At = corner1At + (trackGeo.xRight - trackGeo.xLeft);
+      const total = path.getTotalLength();
+      const corner1Frac = corner1At / total;
+      const corner2Frac = corner2At / total;
+
+      const dt = lastTickTime ? (now - lastTickTime) / 1000 : 0;
+      const move = computeMove(pacPosFrac, corner1Frac, corner2Frac, dt);
+
+      if (move) {
+        setPacmanRotation(move.rot);
+        const newFrac = Math.max(move.min, Math.min(move.max, pacPosFrac + move.delta));
+        if (newFrac !== pacPosFrac) {
+          pacPosFrac = newFrac;
+          updatePacmanVisual();
+          const ate = eatNearbyDots();
+          const unAte = unEatDotsAhead();
+          if (ate || unAte) updateInfoBoxForPosition();
+          updateGhostVisibility();
+        }
+      }
+    }
+    lastTickTime = now;
+    requestAnimationFrame(tick);
+  }
+
+  window.addEventListener('resize', layout);
+
+  // Belt-and-suspenders fix for whatever async process (Tailwind's CDN
+  // script styling elements late, theme.js applying the saved theme,
+  // etc.) was causing stale measurements on first paint: rather than
+  // guessing which one it is and when exactly it finishes, just re-run
+  // layout several times over the first second. Cheap, and guarantees
+  // at least one run lands after everything has actually settled.
+  [0, 50, 150, 300, 600, 1000].forEach(delay => setTimeout(layout, delay));
+  window.addEventListener('load', () => {
+    [0, 50, 150, 300].forEach(delay => setTimeout(layout, delay));
+  });
+
+  // Hard fallback: force it visible after 1.5s no matter what, in case
+  // measurements pathologically never land on two consecutive matches.
+  setTimeout(() => wrap.classList.add('settled'), 1500);
+
+  // Self-healing fallback: re-run layout automatically whenever the lower
+  // boxes' actual rendered size changes for any reason (web font finishing
+  // load, Tailwind's CDN script injecting styles late, etc.) rather than
+  // guessing at a timeout value. Deliberately observes ONLY #lower-boxes —
+  // bio's height is SET by layout() (which also changes wrap's total
+  // height as a side effect), so observing bio-box OR wrap would create a
+  // feedback loop that browsers silently suppress after a few iterations.
+  // lower-boxes' size is purely content-driven and never touched by our
+  // own code, so it's the one safe thing to watch.
+  const layoutObserver = new ResizeObserver(() => layout());
+  layoutObserver.observe(lowerBoxes);
+
+  // Prevent arrow keys from scrolling the page, and track which ones are
+  // currently held — the animation loop in tick() reads pressedKeys each
+  // frame rather than moving Pac-Man directly on keydown, which gives
+  // smooth continuous movement while a key is held instead of one jump
+  // per keypress. WASD is normalized to the same Arrow* names here so
+  // nothing downstream (computeMove, etc.) needs to know about it.
+  const WASD_TO_ARROW = {
+    w: 'ArrowUp', a: 'ArrowLeft', s: 'ArrowDown', d: 'ArrowRight',
+    W: 'ArrowUp', A: 'ArrowLeft', S: 'ArrowDown', D: 'ArrowRight'
+  };
+
+  window.addEventListener('keydown', (e) => {
+    const key = WASD_TO_ARROW[e.key] || e.key;
+    if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(key)) {
+      e.preventDefault();
+      pressedKeys.add(key);
+    }
+  });
+  window.addEventListener('keyup', (e) => {
+    const key = WASD_TO_ARROW[e.key] || e.key;
+    pressedKeys.delete(key);
+  });
+
+  setPacmanRotation(90); // starts facing down the first (top) vertical run
+  requestAnimationFrame(tick);
+})();
+</script>
 
 </body>
 </html>
