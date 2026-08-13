@@ -11,6 +11,9 @@
   <!-- THEME SYSTEM -->
   <script src="scripts/theme.js" defer></script>
 
+  <!-- ICONS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tabler-icons/3.1.0/iconfont/tabler-icons.min.css">
+
   <style>
     /* Footer has no z-index of its own (site-wide, in components.js),
        so it defaults to stacking below anything with an explicit
@@ -52,7 +55,7 @@
       display: flex;
       flex-direction: column;
       gap: 34px;
-      margin-bottom: 60px;
+      margin-bottom: 24px;
       opacity: 0;
       transition: opacity 250ms ease;
     }
@@ -107,7 +110,7 @@
     }
 
     #personality-box {
-      padding-bottom: 64px;
+      padding-bottom: 24px;
     }
 
     .track-dot {
@@ -196,10 +199,12 @@
     <div id="bio-box" class="grid-cell">
       <div class="grid-cell-label">BIO</div>
       <p style="color: var(--muted); line-height: 1.7; font-size: 15px;">
-        Computer Science and Economics student at the University of Maryland,
-        Class of 2028. Focused on full-stack development, data systems, and
-        building software that solves real problems. Targeting SWE, AI/ML, and
-        Data Analytics roles, available Fall 2026.
+        I'm Spencer Feldmann, a Computer Science and Economics student at the University of Maryland with minors in Business Analytics and Rhetoric.
+        I added the Rhetoric minor because I think the best technical work is wasted if you can't explain why it matters.
+        That belief has shaped what I've chosen to work on: energy audit tooling as a data analyst intern at Habitat for Humanity, 
+        a full-stack development bootcamp with Hack4Impact, and now automated testing for a health claims platform at ClaimsBridge, 
+        where the stakes are people's actual healthcare. In a lot of ways, that's what I'm interested in doing long-term, 
+        bridging the gap between technology and the people it's meant to help.
       </p>
     </div>
 
@@ -210,10 +215,45 @@
       </div>
 
       <div id="personality-box" class="grid-cell">
-        <div class="grid-cell-label">PERSONALITY &amp; INTERESTS</div>
-        <p style="color: var(--muted); font-size: 14px; opacity: 0.7;">
-          Coming soon.
-        </p>
+        <div class="grid-cell-label">FAVORITES</div>
+      
+        <div class="interest-cluster">
+          <div class="interest-pill" style="transform: rotate(-1.5deg);">
+            <i class="ti ti-bolt"></i>
+            <span class="interest-label">SUPERPOWER:</span>
+            <span class="interest-value">Telekinesis</span>
+          </div>
+      
+          <div class="interest-pill" style="transform: rotate(2deg);">
+            <i class="ti ti-headphones"></i>
+            <span class="interest-label">BAND:</span>
+            <span class="interest-value">The Neighbourhood</span>
+          </div>
+      
+          <div class="interest-pill" style="transform: rotate(-2deg);">
+            <i class="ti ti-book"></i>
+            <span class="interest-label">BOOK:</span>
+            <span class="interest-value">Red Rising</span>
+          </div>
+      
+          <div class="interest-pill" style="transform: rotate(2deg);">
+            <i class="ti ti-device-gamepad-2"></i>
+            <span class="interest-label">VIDEO GAME:</span>
+            <span class="interest-value">Hades</span>
+          </div>
+      
+          <div class="interest-pill" style="transform: rotate(-1.5deg);">
+            <i class="ti ti-microphone-2"></i>
+            <span class="interest-label">KARAOKE:</span>
+            <span class="interest-value">Locked Out of Heaven</span>
+          </div>
+      
+          <div class="interest-pill" style="transform: rotate(1.5deg);">
+            <i class="ti ti-building-castle"></i>
+            <span class="interest-label">LEGO SET:</span>
+            <span class="interest-value">Colosseum</span>
+          </div>
+        </div>
       </div>
     </div>
 

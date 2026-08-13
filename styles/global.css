@@ -175,3 +175,36 @@ span{
   transform: none;
   opacity: 1;
 }
+
+.interest-cluster {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px 12px;
+  margin-top: 10px;
+}
+
+.interest-pill {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  border: var(--border);
+  border-radius: 999px;
+  padding: 8px 16px 8px 12px;
+}
+
+.interest-pill i {
+  color: var(--accent, #7fe89a);
+  font-size: 16px;
+}
+
+.interest-label {
+  color: var(--muted, #5fae6f);
+  font-size: 11px;
+  letter-spacing: 0.05em;
+}
+
+.interest-value {
+  color: var(--text, #c8f5d4);
+  font-size: 14px;
+}
