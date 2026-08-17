@@ -190,7 +190,7 @@ span{
   gap: 7px;
   border: var(--border);
   border-radius: 999px;
-  padding: 8px 16px 8px 12px;
+  padding: 8px 8px 8px 8px;
 }
 
 .interest-pill i {
