@@ -83,6 +83,19 @@
       opacity: 0.5;
     }
 
+    /* Invisible, wide click target laid over the visible track — a real
+       2px stroke is too thin to comfortably click, so this gives a
+       generous hit zone without changing what's actually drawn. Only
+       this path re-enables pointer-events; #track-svg itself stays
+       pointer-events:none so nothing else under it is blocked. */
+    #track-hit {
+      fill: none;
+      stroke: transparent;
+      stroke-width: 26px;
+      pointer-events: auto;
+      cursor: pointer;
+    }
+
     /* BIO sits up top and stops short of the right edge, leaving a gutter
        for the track's first vertical run. Same width as the lower boxes —
        just shifted left (no indent) so the two create mirrored gutters. */
@@ -192,6 +205,7 @@
 
     <!-- TRACK LINE -->
     <svg id="track-svg">
+      <path id="track-hit" />
       <path id="track-path" />
     </svg>
 
@@ -331,6 +345,7 @@
   const wrap = document.getElementById('timeline-wrap');
   const svg = document.getElementById('track-svg');
   const path = document.getElementById('track-path');
+  const trackHit = document.getElementById('track-hit');
   const bioBox = document.getElementById('bio-box');
   const lowerBoxes = document.getElementById('lower-boxes');
   const dotsLayer = document.getElementById('dots-layer');
@@ -454,7 +469,12 @@
     svg.setAttribute('height', wrapRect.height);
     svg.setAttribute('viewBox', `0 0 ${wrapRect.width} ${wrapRect.height}`);
 
-    path.setAttribute('d', `M ${xRight} ${yTop} L ${xRight} ${yTurn} L ${xLeft} ${yTurn} L ${xLeft} ${yBottom}`);
+    const dAttr = `M ${xRight} ${yTop} L ${xRight} ${yTurn} L ${xLeft} ${yTurn} L ${xLeft} ${yBottom}`;
+    path.setAttribute('d', dAttr);
+    // Hit target follows the exact same path as the visible line — it's
+    // just given a fat invisible stroke via CSS so clicks near the line
+    // register, not only clicks on the literal 2px path.
+    trackHit.setAttribute('d', dAttr);
 
     trackGeo = { xRight, xLeft, yTop, yTurn, yBottom };
 
@@ -571,6 +591,28 @@
     return changed;
   }
 
+  // Full sweep: brings every dot's eaten/un-eaten state in line with
+  // pacPosFrac in one pass. Used after a click-teleport, where Pac-Man
+  // can jump past (or backward past) several dots at once — the
+  // incremental eatNearbyDots()/unEatDotsAhead() pair above only checks
+  // dots right at the eat radius, so a big jump needs this instead.
+  function resyncAllDots() {
+    let changed = false;
+    dotFractions.forEach((frac, i) => {
+      if (SKIP_DOTS.has(i)) return;
+      const shouldBeEaten = frac <= pacPosFrac + EAT_RADIUS_FRAC;
+      const isEaten = eatenDots.has(i);
+      if (shouldBeEaten !== isEaten) {
+        changed = true;
+        if (shouldBeEaten) eatenDots.add(i);
+        else eatenDots.delete(i);
+      }
+      const dotEl = dotsLayer.querySelector(`.track-dot[data-index="${i}"]`);
+      if (dotEl) dotEl.classList.toggle('eaten', shouldBeEaten);
+    });
+    return changed;
+  }
+
   // Info box always reflects the most recently reached dot that's still
   // eaten and at or behind Pac-Man's current position — recomputed after
   // eating OR un-eating, so rewinding naturally reverts the text too.
@@ -675,6 +717,58 @@
     lastTickTime = now;
     requestAnimationFrame(tick);
   }
+
+  // Projects an arbitrary (x, y) point (already relative to the SVG's own
+  // origin) onto the nearest spot on the 3-segment track. Since every
+  // segment is a straight horizontal or vertical line, standard vector
+  // projection is exact — no need to sample the path repeatedly. Returns
+  // both the resulting fraction along the whole path AND which axis that
+  // segment runs along, so the caller can orient Pac-Man correctly
+  // (vertical segment → facing down, horizontal segment → facing left,
+  // matching the existing rot:90 / rot:180 convention used elsewhere).
+  function projectPointToTrack(x, y) {
+    if (!trackGeo) return null;
+    const { xRight, xLeft, yTop, yTurn, yBottom } = trackGeo;
+    const total = path.getTotalLength();
+
+    const segments = [
+      { x1: xRight, y1: yTop,  x2: xRight, y2: yTurn,   startLen: 0,                                 orientation: 'vertical'   },
+      { x1: xRight, y1: yTurn, x2: xLeft,  y2: yTurn,    startLen: yTurn - yTop,                      orientation: 'horizontal' },
+      { x1: xLeft,  y1: yTurn, x2: xLeft,  y2: yBottom,  startLen: (yTurn - yTop) + (xRight - xLeft),  orientation: 'vertical'   }
+    ];
+
+    let best = null;
+    segments.forEach(seg => {
+      const dx = seg.x2 - seg.x1, dy = seg.y2 - seg.y1;
+      const lenSq = dx * dx + dy * dy;
+      let t = lenSq === 0 ? 0 : ((x - seg.x1) * dx + (y - seg.y1) * dy) / lenSq;
+      t = Math.max(0, Math.min(1, t));
+      const px = seg.x1 + t * dx, py = seg.y1 + t * dy;
+      const dist = Math.hypot(x - px, y - py);
+      const lengthAt = seg.startLen + t * Math.sqrt(lenSq);
+      if (!best || dist < best.dist) best = { dist, lengthAt, orientation: seg.orientation };
+    });
+
+    return { frac: best.lengthAt / total, orientation: best.orientation };
+  }
+
+  // Click-to-teleport: jumps Pac-Man straight to the clicked point on the
+  // track, orients him based on which segment he landed on, and fully
+  // re-syncs dots/ghost/info-box for the new position — same end state
+  // as if he'd walked there one frame at a time.
+  trackHit.addEventListener('click', (e) => {
+    if (!trackGeo) return;
+    const rect = svg.getBoundingClientRect();
+    const result = projectPointToTrack(e.clientX - rect.left, e.clientY - rect.top);
+    if (!result) return;
+
+    pacPosFrac = result.frac;
+    setPacmanRotation(result.orientation === 'vertical' ? 90 : 180);
+    updatePacmanVisual();
+    resyncAllDots();
+    updateGhostVisibility();
+    if (!ghostEaten) updateInfoBoxForPosition();
+  });
 
   window.addEventListener('resize', layout);
 
