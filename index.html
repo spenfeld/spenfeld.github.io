@@ -2,17 +2,39 @@
 <html>
 <head>
   <title>Spencer Feldmann</title>
- 
+
   <script src="https://cdn.tailwindcss.com"></script>
- 
+
   <!-- GLOBAL STYLES -->
   <link rel="stylesheet" href="styles/global.css">
- 
+
+  <!-- EARLY THEME APPLY (prevents a flash of the default theme on
+       page load — runs synchronously, before first paint, and just
+       replays whatever theme.js cached last time) -->
+  <script>
+    (function () {
+      var name = localStorage.getItem("theme");
+      var vars = localStorage.getItem("themeVars");
+      if (vars) {
+        try {
+          vars = JSON.parse(vars);
+          for (var k in vars) {
+            document.documentElement.style.setProperty(k, vars[k]);
+          }
+        } catch (e) {}
+      }
+      if (name) document.documentElement.setAttribute("data-theme", name);
+    })();
+  </script>
+
   <!-- THEME SYSTEM -->
   <script src="scripts/theme.js" defer></script>
- 
+
   <style>
-    /* PORTFOLIO GRID */
+    /* PORTFOLIO GRID
+       Page-specific layout — .grid-cell / .grid-cell-label themselves
+       are shared (defined in global.css); everything below only adds
+       what's unique to this page's grid. */
     .portfolio-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -21,137 +43,288 @@
       border: none;
       border-radius: 12px;
     }
- 
+
     .grid-cell {
-      border: var(--border);
-      border-radius: 12px;
-      padding: 20px 20px;
-      background: transparent;
       transition: background 120ms ease;
-      box-shadow: var(--glow);
     }
- 
-    .grid-cell,
-    .grid-cell * {
-      text-shadow: var(--glow);
-    }
- 
+
     .grid-cell:hover {
       background: rgba(255, 255, 255, 0.03);
     }
- 
-    .grid-cell-label {
-      display: block;
-      font-weight: 600;
-      margin-bottom: 12px;
-      color: var(--accent);
-      font-size: 20px
-    }
- 
+
     .grid-cell p,
     .grid-cell ul {
       color: var(--muted);
       line-height: 1.6;
     }
- 
+
     .grid-cell ul {
       list-style: none;
       padding: 0;
       margin: 0;
     }
- 
+
     .grid-cell ul li::before {
       content: "> ";
       color: var(--accent);
       opacity: 0.5;
     }
- 
-    /* SPANNING */
+
+    /* SPANNING — controls which cards occupy extra grid space */
     .statement     { grid-column: span 2; }
     .featured      { grid-row: span 2; }
     .current-focus { grid-column: span 2; }
     .coding-langs  { grid-row: span 2; }
     .volunteer     { grid-column: span 2; }
+
+    /* FIELD LABELS
+       "LABEL: value" pairs. .field-label is used inline (Personnel
+       File); .field-label-fixed adds a fixed width so labels line up
+       in a column (Involvement). */
+    .field-label {
+      color: var(--muted);
+      letter-spacing: 1px;
+    }
+
+    .field-label-fixed {
+      color: var(--muted);
+      letter-spacing: 1px;
+      display: inline-block;
+      width: 125px;
+    }
+
+    /* Small centered caption text (used for CODENAME / DESIGNATION
+       under the ID photo) */
+    .id-caption {
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 1px;
+      text-align: center;
+    }
+
+    /* SOCIAL LINKS (LinkedIn / GitHub / Resume) */
+    .social-link {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      color: var(--accent);
+      text-decoration: none;
+      transition: opacity 0.15s;
+    }
+
+    .social-link i {
+      font-size: 64px;
+    }
+
+    .social-link span {
+      font-size: 13px;
+      letter-spacing: 1px;
+    }
+
+    /* GitHub icon is drawn label-above-icon and nudged down slightly
+       to visually balance against the other two links */
+    .social-link--reverse {
+      flex-direction: column-reverse;
+      margin-top: 30px;
+    }
+
+    /* PROJECT CARDS (Featured Projects) */
+    .project-card {
+      border: var(--border);
+      border-radius: 4px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .project-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .project-eyebrow {
+      font-size: 10px;
+      color: var(--muted);
+      opacity: 0.5;
+    }
+
+    .project-desc {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .project-footer {
+      padding-top: 8px;
+      margin-top: 4px;
+      text-align: center;
+    }
+
+    .project-footer-divider {
+      border-top: 1px solid var(--muted);
+      opacity: 0.3;
+      margin-bottom: 8px;
+    }
+
+    .project-link {
+      font-size: 11px;
+      color: var(--accent);
+      letter-spacing: 1px;
+      text-decoration: none;
+    }
+
+    /* TAGS
+       Shared pill look; opacity differs slightly between contexts
+       in the original design (project tags vs. tool tags), so that's
+       kept as a modifier rather than flattened into one value. */
+    .tag {
+      border: 1px solid var(--muted);
+      font-size: 11px;
+      padding: 2px 8px;
+      color: var(--accent);
+      border-radius: 2px;
+    }
+
+    .tag--project { opacity: 0.6; }
+    .tag--tool    { opacity: 0.8; }
+
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      justify-content: center;
+    }
+
+    /* CURRENT FOCUS — status checklist */
+    .status-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--accent);
+    }
+
+    .status-item--pending {
+      opacity: 0.6;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 4px var(--accent);
+      flex-shrink: 0;
+    }
+
+    .status-dot--pending {
+      background: none;
+      box-shadow: none;
+      border: 1px solid var(--accent);
+    }
+
+    /* ACHIEVEMENTS — stat blocks */
+    .stat {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .stat-value {
+      font-size: 16px;
+      color: var(--accent);
+      letter-spacing: 1px;
+    }
+
+    .stat-label {
+      font-size: 10px;
+      color: var(--muted);
+      letter-spacing: 1px;
+    }
   </style>
 </head>
- 
+
 <body>
- 
+
 <!-- SCANLINES -->
 <div class="scanlines"></div>
- 
+
 <!-- CRT VIGNETTE -->
 <div class="crt"></div>
- 
+
 <!-- BOOT -->
 <div id="boot"
   class="fixed inset-0 flex items-center justify-center z-[9999]"
   style="display:none; background: var(--bg); color: var(--text);">
- 
+
   <div class="text-center font-mono">
     <p id="bootText">LAUNCHING PORTFOLIO...</p>
- 
+
     <p class="text-sm opacity-70 mt-3">
       HOST: Spencer_Feldmann
     </p>
   </div>
 </div>
- 
+
 <!-- NAV -->
 <div id="nav"></div>
- 
+
 <!-- CONTENT -->
 <section class="max-w-5xl mx-auto px-6 py-20">
- 
+
   <h1 class="text-4xl font-semibold mb-6">
     Problem Solver · Scholar · Humanitarian
   </h1>
- 
+
   <p class="mb-12" style="color:var(--muted)">
     Focused on full-stack development, data systems, and building software that solves real problems.
   </p>
- 
+
   <!-- PORTFOLIO GRID -->
   <div class="portfolio-grid">
- 
+
     <!-- Row 1 -->
     <div class="grid-cell statement" style="display: flex; flex-direction: column;">
       <div class="grid-cell-label">PERSONNEL FILE</div>
-    
+
       <div style="display: flex; gap: 0; align-items: stretch; flex: 1;">
-    
-        <div style="height: 100%;flex: 2; padding-right: 24px; display: flex; flex-direction: column; justify-content: center; gap: 12px; font-size: 16px;">
+
+        <div style="height: 100%; flex: 2; padding-right: 24px; display: flex; flex-direction: column; justify-content: center; gap: 12px; font-size: 16px;">
           <div>
-            <span style="color: var(--muted); letter-spacing: 1px;">SCHOOL: </span>
+            <span class="field-label">SCHOOL: </span>
             <span style="color: var(--accent);">University of Maryland · College Park</span>
           </div>
           <div>
-            <span style="color: var(--muted); letter-spacing: 1px;">DEGREES: </span>
+            <span class="field-label">DEGREES: </span>
             <span style="color: var(--accent);">B.S. Computer Science · B.A. Economics</span>
           </div>
           <div>
-            <span style="color: var(--muted); letter-spacing: 1px;">MINORS: </span>
+            <span class="field-label">MINORS: </span>
             <span style="color: var(--accent);">Business Analytics · Rhetoric</span>
           </div>
           <div>
-            <span style="color: var(--muted); letter-spacing: 1px;">YEAR: </span>
+            <span class="field-label">YEAR: </span>
             <span style="color: var(--accent);">Junior · Class of 2028</span>
           </div>
           <div>
-            <span style="color: var(--muted); letter-spacing: 1px;">ROLES: </span>
+            <span class="field-label">ROLES: </span>
             <span style="color: var(--accent);">SWE · AI/ML · Data Analytics</span>
           </div>
         </div>
-  
-    
+
+        <!-- ID card graphic: corner brackets, head/shoulders icon, barcode -->
         <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; padding-left: 24px; gap: 8px; position: relative;">
-    
+
           <div style="position: absolute; left: 12px; top: 0; bottom: 0; width: 3px; background: var(--accent); opacity: 0.4; border-radius: 2px;"></div>
-    
-          <div style="font-size: 11px; color: var(--muted); letter-spacing: 1px; text-align: center;">
+
+          <div class="id-caption">
             CODENAME: <span style="color: var(--accent);">Spencer Feldmann</span>
           </div>
-    
+
           <div style="position: relative; width: 110px; height: 110px; display: flex; justify-content: center; align-items: center;">
             <div style="position: absolute; top: 0; left: 0; width: 16px; height: 16px; border-top: 2px solid var(--accent); border-left: 2px solid var(--accent);"></div>
             <div style="position: absolute; top: 0; right: 0; width: 16px; height: 16px; border-top: 2px solid var(--accent); border-right: 2px solid var(--accent);"></div>
@@ -162,23 +335,25 @@
               <path d="M5 105 Q5 75 50 75 Q95 75 95 105"/>
             </svg>
           </div>
-    
-          <div style="font-size: 11px; color: var(--muted); letter-spacing: 1px; text-align: center;">
+
+          <div class="id-caption">
             DESIGNATION: <span style="color: var(--accent);">Developer</span>
           </div>
-    
+
           <!--<div style="font-size: 9px; color: var(--muted); opacity: 0.6; letter-spacing: 1px; text-align: center;">ISSUED: 2021 · EXPIRES: 2026</div>-->
-    
+
           <div style="display: flex; flex-direction: column; align-items: center; gap: 3px;">
             <svg id="barcode-svg" width="160" height="32" xmlns="http://www.w3.org/2000/svg"></svg>
             <div style="font-size: 7px; color: var(--muted); opacity: 0.6; letter-spacing: 2px;">SF 0741 603 0082</div>
           </div>
-    
+
         </div>
-    
+
       </div>
 
       <script>
+        // Draws a fake barcode: alternating bar/gap widths from a
+        // fixed pattern, bars rendered on even indices only.
         const bars = [3,1,2,1,4,1,2,3,1,2,1,3,2,1,4,1,2,1,3,1,2,4,1,2,1,3,1,2,1,4,2,1,3,1,2,1,4,1,2,3,1,2,1,3,2,1,2,1,4,1,2,1,3,2,1,4,1,2,1,3,1,2,3,1,4,1,2,1,3,2,1,3,1,2,4,1,2,1,3,1,2,1,4,2,1,3,1,2,3,1,2,1,3,1];
         const svg = document.getElementById('barcode-svg');
         let x = 0;
@@ -197,192 +372,189 @@
         });
       </script>
     </div>
-    
+
     <div class="grid-cell">
       <div class="grid-cell-label">LINKS</div>
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
       <div style="display: flex; justify-content: space-around; align-items: flex-start; height: calc(100% - 36px); padding-top: 30px;">
 
-        <a href="https://www.linkedin.com/in/spencer-feldmann/" target="_blank"
-          style="display: flex; flex-direction: column; align-items: center; gap: 10px; color: var(--accent); text-decoration: none; transition: opacity 0.15s;">
-          <i class="fab fa-linkedin" style="font-size: 64px;"></i>
-          <span style="font-size: 13px; letter-spacing: 1px;">[ LinkedIn ]</span>
+        <a href="https://www.linkedin.com/in/spencer-feldmann/" target="_blank" class="social-link">
+          <i class="fab fa-linkedin"></i>
+          <span>[ LinkedIn ]</span>
         </a>
-      
-        <a href="https://github.com/spenfeld" target="_blank"
-          style="display: flex; flex-direction: column-reverse; align-items: center; gap: 10px; color: var(--accent); text-decoration: none; transition: opacity 0.15s; margin-top: 30px;">
-          <i class="fab fa-github" style="font-size: 64px;"></i>
-          <span style="font-size: 13px; letter-spacing: 1px;">[ GitHub ]</span>
+
+        <a href="https://github.com/spenfeld" target="_blank" class="social-link social-link--reverse">
+          <i class="fab fa-github"></i>
+          <span>[ GitHub ]</span>
         </a>
-      
-        <a href="assets/resume.pdf" target="_blank"
-          style="display: flex; flex-direction: column; align-items: center; gap: 10px; color: var(--accent); text-decoration: none; transition: opacity 0.15s;">
-          <i class="fa fa-file-alt" style="font-size: 64px;"></i>
-          <span style="font-size: 13px; letter-spacing: 1px;">[ Resume ]</span>
+
+        <a href="assets/resume.pdf" target="_blank" class="social-link">
+          <i class="fa fa-file-alt"></i>
+          <span>[ Resume ]</span>
         </a>
-      
+
       </div>
     </div>
- 
+
     <!-- Row 2 -->
     <div class="grid-cell featured" style="display: flex; flex-direction: column;">
       <div class="grid-cell-label">FEATURED PROJECTS</div>
-    
+
       <div style="display: flex; flex-direction: column; justify-content: space-evenly; flex: 1; gap: 16px;">
-    
-        <div style="border: var(--border); border-radius: 4px; padding: 16px; display: flex; flex-direction: column; gap: 10px;">
-          <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-            <div style="font-size: 10px; color: var(--muted); opacity: 0.5; letter-spacing: 2px;">PROJECT NO. 002</div>
-            <div style="font-size: 10px; color: var(--muted); opacity: 0.5; letter-spacing: 1px;">2025</div>
+
+        <div class="project-card">
+          <div class="project-card-header">
+            <div class="project-eyebrow" style="letter-spacing: 2px;">PROJECT NO. 002</div>
+            <div class="project-eyebrow" style="letter-spacing: 1px;">2025</div>
           </div>
           <div>
             <div style="font-size: 16px; color: var(--accent);">Climate Resiliency Dashboard</div>
             <div style="font-size: 11px; color: var(--muted); letter-spacing: 1px; margin-top: 2px;">CLASSIFICATION: Data · Climate Tech</div>
           </div>
-          <div style="font-size: 13px; color: var(--muted); line-height: 1.6;">
+          <div class="project-desc">
             <span style="color: var(--muted); opacity: 0.5;">> </span> Constructed workbook aggregating energy audit data and emissions savings in Excel.
           </div>
-          <div style="display: flex; flex-wrap: wrap; gap: 6px; justify-content: center;">
-            <span style="border: 1px solid var(--muted); opacity: 0.6; font-size: 11px; padding: 2px 8px; color: var(--accent); border-radius: 2px;">VBA</span>
-            <span style="border: 1px solid var(--muted); opacity: 0.6; font-size: 11px; padding: 2px 8px; color: var(--accent); border-radius: 2px;">Dashboards</span>
-            <span style="border: 1px solid var(--muted); opacity: 0.6; font-size: 11px; padding: 2px 8px; color: var(--accent); border-radius: 2px;">Data Analysis</span>
+          <div class="tag-row">
+            <span class="tag tag--project">VBA</span>
+            <span class="tag tag--project">Dashboards</span>
+            <span class="tag tag--project">Data Analysis</span>
           </div>
-          <div style="padding-top: 8px; margin-top: 4px; text-align: center;">
-            <div style="border-top: 1px solid var(--muted); opacity: 0.3; margin-bottom: 8px;"></div>
-            <a href="https://github.com/spenfeld/Climate-Resiliency-Project" target="_blank"
-              style="font-size: 11px; color: var(--accent); letter-spacing: 1px; text-decoration: none;">
+          <div class="project-footer">
+            <div class="project-footer-divider"></div>
+            <a href="https://github.com/spenfeld/Climate-Resiliency-Project" target="_blank" class="project-link">
               [ GITHUB LINK ]
             </a>
           </div>
         </div>
-  
-        <div style="border: var(--border); border-radius: 4px; padding: 16px; display: flex; flex-direction: column; gap: 10px;">
-          <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-            <div style="font-size: 10px; color: var(--muted); opacity: 0.5; letter-spacing: 2px;">PROJECT NO. 001</div>
-            <div style="font-size: 10px; color: var(--muted); opacity: 0.5; letter-spacing: 1px;">2022</div>
+
+        <div class="project-card">
+          <div class="project-card-header">
+            <div class="project-eyebrow" style="letter-spacing: 2px;">PROJECT NO. 001</div>
+            <div class="project-eyebrow" style="letter-spacing: 1px;">2022</div>
           </div>
           <div>
             <div style="font-size: 16px; color: var(--accent);">Laser Tag Statistics Storage System</div>
             <div style="font-size: 11px; color: var(--muted); letter-spacing: 1px; margin-top: 2px;">CLASSIFICATION: Data Sys · Backend</div>
           </div>
-          <div style="font-size: 13px; color: var(--muted); line-height: 1.6;">
+          <div class="project-desc">
             <span style="color: var(--muted); opacity: 0.5;">> </span>Programmed a CLI app for tracking laser tag player stats with PIN-secured accounts and JSON persistence.
           </div>
-          <div style="display: flex; flex-wrap: wrap; gap: 6px; justify-content: center;">
-            <span style="border: 1px solid var(--muted); opacity: 0.6; font-size: 11px; padding: 2px 8px; color: var(--accent); border-radius: 2px;">Python</span>
-            <span style="border: 1px solid var(--muted); opacity: 0.6; font-size: 11px; padding: 2px 8px; color: var(--accent); border-radius: 2px;">JSON</span>
-            <span style="border: 1px solid var(--muted); opacity: 0.6; font-size: 11px; padding: 2px 8px; color: var(--accent); border-radius: 2px;">OOP</span>
-            <span style="border: 1px solid var(--muted); opacity: 0.6; font-size: 11px; padding: 2px 8px; color: var(--accent); border-radius: 2px;">CLI</span>
+          <div class="tag-row">
+            <span class="tag tag--project">Python</span>
+            <span class="tag tag--project">JSON</span>
+            <span class="tag tag--project">OOP</span>
+            <span class="tag tag--project">CLI</span>
           </div>
-          <div style="padding-top: 8px; margin-top: 4px; text-align: center;">
-            <div style="border-top: 1px solid var(--muted); opacity: 0.3; margin-bottom: 8px;"></div>
-            <a href="https://github.com/spenfeld/Laser-Tag-Statistics-Storage-System" target="_blank"
-              style="font-size: 11px; color: var(--accent); letter-spacing: 1px; text-decoration: none;">
+          <div class="project-footer">
+            <div class="project-footer-divider"></div>
+            <a href="https://github.com/spenfeld/Laser-Tag-Statistics-Storage-System" target="_blank" class="project-link">
               [ GITHUB LINK ]
             </a>
           </div>
         </div>
       </div>
     </div>
- 
+
     <div class="grid-cell current-focus" style="display: flex; flex-direction: column;">
       <div class="grid-cell-label">CURRENT FOCUS</div>
-    
+
       <div style="display: flex; flex: 1; gap: 0;">
-    
+
         <div style="flex: 1; padding-right: 20px; display: flex; flex-direction: column; justify-content: flex-start; gap: 8px;">
           <div style="font-size: 11px; color: var(--muted); letter-spacing: 2px; margin-bottom: 4px;">OBJECTIVE</div>
-          <div style="font-size: 13px; color: var(--accent);">> Develop automated testing for health claims company platform</div>
-          <div style="font-size: 13px; color: var(--accent);">> Scope: importing, exporting and pricing of health claims</div>
+          <div style="font-size: 13px; color: var(--accent);">> Develop automated testing for health claims import pipeline</div>
+          <div style="font-size: 13px; color: var(--accent);">> Cover successful, rejected & edge-case scenarios</div>
           <div style="font-size: 13px; color: var(--accent);">> Integrated via Azure DevOps CI/CD, running on week nights</div>
         </div>
-    
+
         <div style="width: 1px; background: var(--muted); opacity: 0.3;"></div>
-    
+
         <div style="flex: 1; padding: 0 20px; display: flex; flex-direction: column; justify-content: flex-start; gap: 6px;">
           <div style="font-size: 11px; color: var(--muted); letter-spacing: 2px; margin-bottom: 4px;">TOOLS</div>
           <div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center; justify-content: center;">
-            <span style="border: 1px solid var(--muted); font-size: 11px; padding: 2px 8px; color: var(--accent); border-radius: 2px; opacity: 0.8;">Azure DevOps</span>
-            <span style="border: 1px solid var(--muted); font-size: 11px; padding: 2px 8px; color: var(--accent); border-radius: 2px; opacity: 0.8;">Pipelines</span>
-            <span style="border: 1px solid var(--muted); font-size: 11px; padding: 2px 8px; color: var(--accent); border-radius: 2px; opacity: 0.8;">SQL Server</span>
-            <span style="border: 1px solid var(--muted); font-size: 11px; padding: 2px 8px; color: var(--accent); border-radius: 2px; opacity: 0.8;">MSTest</span>
-            <span style="border: 1px solid var(--muted); font-size: 11px; padding: 2px 8px; color: var(--accent); border-radius: 2px; opacity: 0.8;">VB.NET</span>
-            <span style="border: 1px solid var(--muted); font-size: 11px; padding: 2px 8px; color: var(--accent); border-radius: 2px; opacity: 0.8;">Visual Studio</span>
+            <span class="tag tag--tool">Azure DevOps</span>
+            <span class="tag tag--tool">Pipelines</span>
+            <span class="tag tag--tool">SQL Server</span>
+            <span class="tag tag--tool">MSTest</span>
+            <span class="tag tag--tool">VB.NET</span>
+            <span class="tag tag--tool">Visual Studio</span>
           </div>
         </div>
-    
+
         <div style="width: 1px; background: var(--muted); opacity: 0.3;"></div>
-    
+
         <div style="flex: 1; padding-left: 20px; display: flex; flex-direction: column; justify-content: flex-start; gap: 8px;">
           <div style="font-size: 11px; color: var(--muted); letter-spacing: 2px; margin-bottom: 4px;">STATUS</div>
-          <div style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--accent);">
-            <div style="width: 7px; height: 7px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 4px var(--accent); flex-shrink: 0;"></div>
-            Configured Database
+          <div class="status-item">
+            <div class="status-dot"></div>
+            Configured database
           </div>
-          <div style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--accent);">
-            <div style="width: 7px; height: 7px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 4px var(--accent); flex-shrink: 0;"></div>
-            Built 4 import tests
+          <div class="status-item">
+            <div class="status-dot"></div>
+            Built 17 import tests
           </div>
-          <div style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--accent);">
-            <div style="width: 7px; height: 7px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 4px var(--accent); flex-shrink: 0;"></div>
-            Created CI/CD pipeline
+          <div class="status-item">
+            <div class="status-dot"></div>
+            Developed CI/CD pipeline
           </div>
-          <div style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--accent); opacity: 0.6;">
-            <div style="width: 7px; height: 7px; border-radius: 50%; border: 1px solid var(--accent); flex-shrink: 0;"></div>
-            Build remaining import tests
+          <div class="status-item">
+            <div class="status-dot"></div>
+            Scripted test runner
           </div>
-          <div style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--accent); opacity: 0.6;">
-            <div style="width: 7px; height: 7px; border-radius: 50%; border: 1px solid var(--accent); flex-shrink: 0;"></div>
-            Pricing/export tests pending
+          <div class="status-item">
+            <div class="status-dot"></div>
+            Created documentation
           </div>
         </div>
-    
+
       </div>
-    
+
       <div style="margin-top: 12px;">
         <div style="height: 1px; background: var(--muted); opacity: 0.3;"></div>
         <div style="display: flex; justify-content: flex-end; padding-top: 8px;">
-            <div style="font-size: 11px; color: var(--accent); letter-spacing: 1px;">
-              LAST UPDATED: JULY 2026
-            </div>
+          <div style="font-size: 11px; color: var(--accent); letter-spacing: 1px;">
+            LAST UPDATED: SEPTEMBER 2026
+          </div>
         </div>
+      </div>
+
     </div>
-    
-    </div>
- 
+
     <!-- Row 3 -->
     <div class="grid-cell" style="display: flex; flex-direction: column;">
       <div class="grid-cell-label">INVOLVEMENT</div>
       <div style="display: flex; flex-direction: column; justify-content: space-evenly; flex: 1;">
         <div style="font-size: 14px;">
-          <span style="color: var(--muted); letter-spacing: 1px; display: inline-block; width: 125px;">> LEADERSHIP</span>
+          <span class="field-label-fixed">> LEADERSHIP</span>
           <span style="color: var(--accent);">Scholars Data Justice</span>
         </div>
         <div style="font-size: 14px;">
-          <span style="color: var(--muted); letter-spacing: 1px; display: inline-block; width: 125px;">> TECHNICAL</span>
+          <span class="field-label-fixed">> TECHNICAL</span>
           <span style="color: var(--accent);">Hack4Impact</span>
         </div>
         <div style="font-size: 14px;">
-          <span style="color: var(--muted); letter-spacing: 1px; display: inline-block; width: 125px;">> SERVICE</span>
+          <span class="field-label-fixed">> SERVICE</span>
           <span style="color: var(--accent);">Habitat for Humanity</span>
         </div>
         <div style="font-size: 14px;">
-          <span style="color: var(--muted); letter-spacing: 1px; display: inline-block; width: 125px;">> ATHLETICS</span>
+          <span class="field-label-fixed">> ATHLETICS</span>
           <span style="color: var(--accent);">Gymnastics · Volleyball</span>
         </div>
         <div style="font-size: 14px;">
-          <span style="color: var(--muted); letter-spacing: 1px; display: inline-block; width: 125px;">> CREATIVITY</span>
+          <span class="field-label-fixed">> CREATIVITY</span>
           <span style="color: var(--accent);">Reading · Board Games</span>
         </div>
       </div>
     </div>
- 
+
     <div class="grid-cell coding-langs" style="display: flex; flex-direction: column;">
       <div class="grid-cell-label">LANGUAGES</div>
-      
+
       <div id="lang-bars" style="display: flex; flex-direction: column; justify-content: space-between; flex: 1; padding-top: 12px;"></div>
-      
+
       <script>
+        // Each language renders as a name/years label plus a row of
+        // `max` segments, with the first `years` of them filled in.
         const langs = [
           { name: 'Python',     years: 6, max: 6 },
           { name: 'Java',       years: 6, max: 6 },
@@ -390,14 +562,14 @@
           { name: 'C',          years: 2, max: 6 },
           { name: 'OCaml',      years: 2, max: 6 },
           { name: 'JavaScript', years: 1, max: 6 },
-          { name: 'HTML/CSS', years: 1, max: 6 },
+          { name: 'HTML/CSS',   years: 1, max: 6 },
         ];
-    
+
         const seg = (filled) => `
           <div style="width:16px; height:40px; border:1px solid var(--accent); border-radius:2px;
             background:${filled ? 'var(--accent)' : 'transparent'}; opacity:${filled ? '1' : '0.15'};">
           </div>`;
-    
+
         document.getElementById('lang-bars').innerHTML = langs.map(l => `
           <div style="display:flex; align-items:center; gap:20px;">
             <div style="width:80px; flex-shrink:0;">
@@ -411,31 +583,32 @@
         `).join('');
       </script>
     </div>
+
     <!-- Row 4 -->
     <div class="grid-cell volunteer" style="display: flex; flex-direction: column;">
       <div class="grid-cell-label">ACHIEVEMENTS</div>
-    
+
       <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0;">
-        <div style="display: flex; flex-direction: column; align-items: center; gap: 4px;">
-          <div style="font-size: 16px; color: var(--accent); letter-spacing: 1px;">290+ VOLUNTEER HRS</div>
-          <div style="font-size: 10px; color: var(--muted); letter-spacing: 1px;">@ HABITAT FOR HUMANITY</div>
+        <div class="stat">
+          <div class="stat-value">290+ VOLUNTEER HRS</div>
+          <div class="stat-label">@ HABITAT FOR HUMANITY</div>
         </div>
-        <div style="display: flex; flex-direction: column; align-items: center; gap: 4px;">
-          <div style="font-size: 16px; color: var(--accent); letter-spacing: 1px;">122</div>
-          <div style="font-size: 10px; color: var(--muted); letter-spacing: 1px;">CREDITS</div>
+        <div class="stat">
+          <div class="stat-value">122</div>
+          <div class="stat-label">CREDITS</div>
         </div>
-        <div style="display: flex; flex-direction: column; align-items: center; gap: 4px;">
-          <div style="font-size: 16px; color: var(--accent); letter-spacing: 1px;">DEAN'S LIST</div>
-          <div style="font-size: 10px; color: var(--muted); letter-spacing: 1px;">HONORS</div>
+        <div class="stat">
+          <div class="stat-value">DEAN'S LIST</div>
+          <div class="stat-label">HONORS</div>
         </div>
-        <div style="display: flex; flex-direction: column; align-items: center; gap: 4px;">
-          <div style="font-size: 16px; color: var(--accent); letter-spacing: 1px;">INAUGURAL COHORT</div>
-          <div style="font-size: 10px; color: var(--muted); letter-spacing: 1px;">SCHOLARS LLP: DATA JUSTICE</div>
+        <div class="stat">
+          <div class="stat-value">INAUGURAL COHORT</div>
+          <div class="stat-label">SCHOLARS LLP: DATA JUSTICE</div>
         </div>
       </div>
-    
+
       <hr style="border: none; border-top: 1px solid var(--muted); opacity: 0.3; margin: 8px 0;">
-    
+
       <div style="display: flex; flex-direction: column; justify-content: space-evenly; flex: 1;">
         <div style="font-size: 17px; color: var(--muted); line-height: 1.5;">
           <span style="color: var(--muted); opacity: 0.5;">>> </span>
@@ -453,21 +626,21 @@
           <span style="color: var(--muted);"> · Dean's Merit Scholarship · Robert E. Fitzpatrick Scholarship</span>
         </div>
       </div>
-    
+
     </div>
- 
+
   </div>
- 
+
 </section>
- 
+
 <!-- HUD -->
 <div id="hud"></div>
- 
+
 <!-- BOOT SCRIPT -->
 <script src="scripts/boot.js"></script>
- 
+
 <!-- COMPONENTS -->
 <script src="scripts/components.js"></script>
- 
+
 </body>
 </html>

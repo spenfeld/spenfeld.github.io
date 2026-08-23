@@ -8,6 +8,25 @@
   <!-- GLOBAL STYLES -->
   <link rel="stylesheet" href="styles/global.css">
 
+  <!-- EARLY THEME APPLY (prevents a flash of the default theme on
+       page load — runs synchronously, before first paint, and just
+       replays whatever theme.js cached last time) -->
+  <script>
+    (function () {
+      var name = localStorage.getItem("theme");
+      var vars = localStorage.getItem("themeVars");
+      if (vars) {
+        try {
+          vars = JSON.parse(vars);
+          for (var k in vars) {
+            document.documentElement.style.setProperty(k, vars[k]);
+          }
+        } catch (e) {}
+      }
+      if (name) document.documentElement.setAttribute("data-theme", name);
+    })();
+  </script>
+
   <!-- THEME SYSTEM -->
   <script src="scripts/theme.js" defer></script>
 </head>
@@ -47,18 +66,14 @@
 
   <h1 class="text-3xl font-semibold mb-8">
     ARCADE
-    <span class="text-xs font-mono align-middle ml-3 px-2 py-1 rounded"
-      style="color:var(--accent); border: var(--border); vertical-align:middle;">
+    <span class="badge text-xs font-mono align-middle ml-3 px-2 py-1 rounded text-accent">
       UNDER CONSTRUCTION
     </span>
   </h1>
 
-  <p class="mb-8"
-    style="color:var(--muted)">
-
+  <p class="mb-8 text-muted">
     Small UI systems and interaction tests exploring
     frontend behavior and interface design.
-
   </p>
 
   <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -70,20 +85,13 @@
         CLICK COUNTER
       </p>
 
-      <p class="text-sm mb-4"
-        style="color:var(--muted)">
-
+      <p class="text-sm mb-4 text-muted">
         Simple state interaction test using
         click events and counters.
-
       </p>
 
-      <button id="counterBtn"
-        class="text-sm nav-link"
-        style="color:var(--accent)">
-
+      <button id="counterBtn" class="text-sm nav-link text-accent">
         Click me (0)
-
       </button>
 
     </div>
@@ -95,21 +103,15 @@
         UI INTERACTION TEST
       </p>
 
-      <p class="text-sm mb-4"
-        style="color:var(--muted)">
-
+      <p class="text-sm mb-4 text-muted">
         Hover states, layout shifts,
         and responsiveness experiments.
-
       </p>
 
-      <div class="space-y-2 text-sm"
-        style="color:var(--muted)">
-
+      <div class="space-y-2 text-sm text-muted">
         <p>Hover behavior testing</p>
         <p>Layout stability experiments</p>
         <p>Responsive spacing validation</p>
-
       </div>
 
     </div>
@@ -123,17 +125,13 @@
 
 <!-- COUNTER -->
 <script>
-const btn = document.getElementById("counterBtn");
+  const btn = document.getElementById("counterBtn");
+  let count = 0;
 
-let count = 0;
-
-btn.addEventListener("click", ()=>{
-
-  count++;
-
-  btn.textContent = `Click me (${count})`;
-
-});
+  btn.addEventListener("click", () => {
+    count++;
+    btn.textContent = `Click me (${count})`;
+  });
 </script>
 
 <!-- BOOT -->

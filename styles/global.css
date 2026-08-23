@@ -1,210 +1,263 @@
-:root{
-  --bg:#0b0b0b;
-  --text:#e5e5e5;
-  --muted:#a3a3a3;
-
-  --accent:#ffffff;
-  --accent2:#9ca3af;
-
-  --border:1px solid rgba(255,255,255,0.08);
-  --glow:none;
-
-  --font:ui-sans-serif;
-}
-
-html{
-  background:var(--bg);
-}
-
-body{
-  margin:0;
-  font-family:var(--font);
-  background:var(--bg);
-  color:var(--text);
-}
-
-/* GLOBAL GLOW */
-a,
-button,
-select,
-h1,
-h2,
-h3,
-p,
-div,
-span{
-  text-shadow:var(--glow);
-}
-
-/* CARD GLOW */
-.card,
-.card *{
-  text-shadow:var(--glow);
-}
-
-/* CARD SYSTEM */
-.card{
-  border:var(--border);
-  box-shadow:var(--glow);
-}
-
-/* NAV */
-.nav-link{
-  transition:
-    opacity 0.12s ease,
-    transform 0.12s ease;
-
-  cursor:pointer;
-}
-
-.nav-link:hover{
-  opacity:0.6;
-  transform:translateX(1px);
-}
-
-/* ACTIVE NAV */
-.active-nav{
-  color:var(--accent);
-  position:relative;
-}
-
-.active-nav::after{
-  content:"";
-  position:absolute;
-
-  left:0;
-  bottom:-6px;
-
-  width:100%;
-  height:1px;
-
-  background:currentColor;
-  opacity:0.7;
-}
-
-/* CURSOR */
-.cursor{
-  display:inline-block;
-  animation:blink 1s infinite;
-}
-
-@keyframes blink{
-  0%,50%{ opacity:1; }
-  51%,100%{ opacity:0; }
-}
-
-/* THEME UI */
-.theme-option{
-  display:inline-block;
-  cursor:pointer;
-}
-
-.theme-active{
-  text-shadow:0 0 8px currentColor;
-  animation:flicker 2.5s infinite;
-}
-
-@keyframes flicker{
-  0%,100%{ opacity:1; }
-  92%{ opacity:0.85; }
-  94%{ opacity:1; }
-  96%{ opacity:0.9; }
-}
-
-/* SCANLINES */
-.scanlines{
-  pointer-events:none;
-  position:fixed;
-  inset:0;
-  z-index:50;
-
-  opacity:0.2;
-
-  background:
-    repeating-linear-gradient(
+/* =========================================================
+   THEME VARIABLES
+   Overridden at runtime by theme.js (applyTheme) — these are
+   just the default "mono" values so the page has correct
+   colors before theme.js runs.
+   ========================================================= */
+   :root {
+    --bg: #0b0b0b;
+    --text: #e5e5e5;
+    --muted: #a3a3a3;
+  
+    --accent: #ffffff;
+    --accent2: #9ca3af;
+  
+    --border: 1px solid rgba(255, 255, 255, 0.08);
+    --glow: none;
+  
+    --font: ui-sans-serif;
+  }
+  
+  /* =========================================================
+     BASE
+     ========================================================= */
+  html {
+    background: var(--bg);
+  }
+  
+  body {
+    margin: 0;
+    font-family: var(--font);
+    background: var(--bg);
+    color: var(--text);
+  }
+  
+  /* Slight default transition on everything so theme swaps
+     and hover states animate instead of snapping. */
+  * {
+    transition-duration: 120ms;
+  }
+  
+  /* =========================================================
+     TEXT COLOR UTILITIES
+     Small helpers for the three theme text colors, since pages
+     otherwise repeat style="color:var(--muted)" etc. by hand.
+     ========================================================= */
+  .text-muted {
+    color: var(--muted);
+  }
+  
+  .text-accent {
+    color: var(--accent);
+  }
+  
+  .text-strong {
+    color: var(--text);
+  }
+  
+  /* =========================================================
+     BADGE
+     Small bordered pill (e.g. tag labels, "UNDER CONSTRUCTION"
+     markers). Color isn't set here — pair with .text-muted /
+     .text-accent / .text-strong depending on context.
+     ========================================================= */
+  .badge {
+    border: var(--border);
+  }
+  
+  /* =========================================================
+     TEXT GLOW
+     Applies the theme's glow (none in mono/light, a colored
+     text-shadow in amber/matrix) across normal text and cards.
+     ========================================================= */
+  a,
+  button,
+  select,
+  h1,
+  h2,
+  h3,
+  p,
+  div,
+  span {
+    text-shadow: var(--glow);
+  }
+  
+  .card,
+  .card * {
+    text-shadow: var(--glow);
+  }
+  
+  /* =========================================================
+     CARD SYSTEM
+     Shared bordered content box. Used directly as .card
+     (archive.html) and extended per-page as .grid-cell
+     (index.html / profile.html) — same component, two names
+     left as-is to avoid touching page markup.
+     ========================================================= */
+  .card {
+    border: var(--border);
+    box-shadow: var(--glow);
+  }
+  
+  .grid-cell {
+    border: var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    background: transparent;
+    box-shadow: var(--glow);
+  }
+  
+  .grid-cell,
+  .grid-cell * {
+    text-shadow: var(--glow);
+  }
+  
+  .grid-cell-label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: var(--accent);
+    font-size: 20px;
+  }
+  
+  /* =========================================================
+     NAV LINKS
+     ========================================================= */
+  .nav-link {
+    cursor: pointer;
+    transition:
+      opacity 0.12s ease,
+      transform 0.12s ease;
+  }
+  
+  .nav-link:hover {
+    opacity: 0.6;
+    transform: translateX(1px);
+  }
+  
+  /* Current-page nav link, applied by components.js */
+  .active-nav {
+    position: relative;
+    color: var(--accent);
+  }
+  
+  .active-nav::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -6px;
+    width: 100%;
+    height: 1px;
+    background: currentColor;
+    opacity: 0.7;
+  }
+  
+  /* Active link shouldn't also show the hover nudge */
+  .active-nav:hover {
+    opacity: 1;
+    transform: none;
+  }
+  
+  /* Blinking cursor character next to the host name in the nav */
+  .cursor {
+    display: inline-block;
+    animation: blink 1s infinite;
+  }
+  
+  @keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+  }
+  
+  /* =========================================================
+     THEME PICKER (bottom HUD bar)
+     ========================================================= */
+  .theme-option {
+    display: inline-block;
+    cursor: pointer;
+  }
+  
+  .theme-active {
+    text-shadow: 0 0 8px currentColor;
+    animation: flicker 2.5s infinite;
+  }
+  
+  @keyframes flicker {
+    0%, 100% { opacity: 1; }
+    92% { opacity: 0.85; }
+    94% { opacity: 1; }
+    96% { opacity: 0.9; }
+  }
+  
+  /* =========================================================
+     CRT / SCANLINE OVERLAYS
+     ========================================================= */
+  .scanlines {
+    pointer-events: none;
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    opacity: 0.2;
+    background: repeating-linear-gradient(
       to bottom,
       transparent,
       transparent 2px,
-      rgba(0,0,0,0.35) 3px
+      rgba(0, 0, 0, 0.35) 3px
     );
-}
-
-/* CRT */
-.crt{
-  pointer-events:none;
-  position:fixed;
-  inset:0;
-  z-index:40;
-
-  background:
-    radial-gradient(
+  }
+  
+  .crt {
+    pointer-events: none;
+    position: fixed;
+    inset: 0;
+    z-index: 40;
+    background: radial-gradient(
       circle at center,
       transparent 60%,
-      rgba(0,0,0,0.55) 100%
+      rgba(0, 0, 0, 0.55) 100%
     );
-}
-
-[data-theme="light"] .crt {
-  background: none;
-}
-
-.nav-active {
-  position: relative;
-}
-
-.nav-active.active-page::after {
-  content: "";
-
-  position: absolute;
-  left: 0;
-  bottom: -6px;
-
-  width: 100%;
-  height: 1px;
-
-  background: currentColor;
-
-  opacity: 0.8;
-}
-
-*{
-  transition-duration:120ms;
-}
-
-.active-nav:hover {
-  transform: none;
-  opacity: 1;
-}
-
-.interest-cluster {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 14px 12px;
-  margin-top: 10px;
-}
-
-.interest-pill {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 7px;
-  border: var(--border);
-  border-radius: 999px;
-  padding: 8px 8px 8px 8px;
-}
-
-.interest-pill i {
-  color: var(--accent, #7fe89a);
-  font-size: 16px;
-}
-
-.interest-label {
-  color: var(--muted, #5fae6f);
-  font-size: 11px;
-  letter-spacing: 0.05em;
-}
-
-.interest-value {
-  color: var(--text, #c8f5d4);
-  font-size: 14px;
-}
+    /* opacity (unlike background) interpolates smoothly, so this fades
+       in step with the color transition instead of snapping instantly */
+    opacity: 1;
+  }
+  
+  /* Vignette reads wrong on the light theme, so fade it out there */
+  [data-theme="light"] .crt {
+    opacity: 0;
+  }
+  
+  /* =========================================================
+     INTEREST PILLS (profile.html "FAVORITES" section)
+     ========================================================= */
+  .interest-cluster {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px 12px;
+    margin-top: 10px;
+  }
+  
+  .interest-pill {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    border: var(--border);
+    border-radius: 999px;
+    padding: 8px;
+  }
+  
+  .interest-pill i {
+    color: var(--accent);
+    font-size: 16px;
+  }
+  
+  .interest-label {
+    color: var(--muted);
+    font-size: 11px;
+    letter-spacing: 0.05em;
+  }
+  
+  .interest-value {
+    color: var(--text);
+    font-size: 14px;
+  }

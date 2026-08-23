@@ -1,72 +1,80 @@
+// Shared top nav, injected into #nav on every page.
 const nav = `
 <nav id="mainNav" class="fixed top-0 left-0 right-0 px-6 py-5 font-mono tracking-wide"
   style="border-bottom: var(--border); background: var(--bg); z-index: 30;">
- 
+
   <div class="max-w-5xl mx-auto flex items-center justify-between">
- 
+
     <a href="index.html"
       class="nav-link font-semibold"
       style="color:var(--muted)">
       [ HOST: Spencer_Feldmann<span class="cursor">_</span> ]
     </a>
- 
+
     <div class="flex items-center gap-5 text-sm"
       style="color:var(--muted)">
       <a class="nav-link" href="archive.html">[ ARCHIVE ]</a>
       <a class="nav-link" href="profile.html">[ PROFILE ]</a>
       <a class="nav-link" href="arcade.html">[ ARCADE ]</a>
     </div>
- 
+
   </div>
 </nav>
 `;
- 
+
+// Shared bottom HUD (system status + theme picker), injected into #hud.
 const hud = `
 <div id="themeBar"
   class="fixed bottom-0 left-0 right-0 px-6 font-mono text-sm select-none"
   style="border-top: var(--border); background: var(--bg); padding-top: 12px; padding-bottom: 12px;">
- 
+
   <div class="max-w-5xl mx-auto flex items-center justify-between">
- 
+
     <span style="color:var(--muted)">
       > SYSTEM STATUS: ONLINE
     </span>
- 
+
     <div>
       <span class="theme-option theme-active" data-theme="mono">[●] MONO</span>
       <span class="theme-option ml-4" data-theme="amber">[ ] AMBER</span>
       <span class="theme-option ml-4" data-theme="matrix">[ ] MATRIX</span>
       <span class="theme-option ml-4" data-theme="light">[ ] LIGHT</span>
     </div>
- 
+
   </div>
 </div>
 `;
- 
+
 document.getElementById("nav").innerHTML = nav;
 document.getElementById("hud").innerHTML = hud;
- 
-// highlight the active nav link based on current page
+
+// Highlight whichever nav link matches the current page.
 const page = window.location.pathname.split("/").pop() || "index.html";
-document.querySelectorAll("#nav .nav-link").forEach(link => {
+document.querySelectorAll("#nav .nav-link").forEach((link) => {
   const href = link.getAttribute("href");
   if (href === page) {
     link.classList.add("active-nav");
     link.style.color = "var(--accent)";
   }
 });
- 
 
-
+// Dev-only: warns in the console if any .grid-cell grows past its
+// intended slot size, so layout regressions in the portfolio grid
+// (index.html) are caught early. Has no effect on pages without
+// .grid-cell elements. Flip DEBUG to false to disable.
 const DEBUG = true;
 
 if (DEBUG) {
-  const observer = new ResizeObserver(entries => {
-    entries.forEach(entry => {
+  const observer = new ResizeObserver((entries) => {
+    entries.forEach((entry) => {
       const { width, height } = entry.contentRect;
       const el = entry.target;
-      const is2wide = el.classList.contains('statement') || el.classList.contains('current-focus') || el.classList.contains('volunteer');
-      const is2tall = el.classList.contains('featured') || el.classList.contains('coding-langs');
+
+      const is2wide = el.classList.contains("statement") ||
+        el.classList.contains("current-focus") ||
+        el.classList.contains("volunteer");
+      const is2tall = el.classList.contains("featured") ||
+        el.classList.contains("coding-langs");
 
       const maxW = is2wide ? 642 : 309;
       const maxH = is2tall ? 625 : 300;
@@ -77,5 +85,5 @@ if (DEBUG) {
     });
   });
 
-  document.querySelectorAll('.grid-cell').forEach(cell => observer.observe(cell));
+  document.querySelectorAll(".grid-cell").forEach((cell) => observer.observe(cell));
 }
