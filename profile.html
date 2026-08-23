@@ -190,6 +190,12 @@
          means the box's size never depends on which text is current. */
       line-height: 1.5;
       min-height: 3em;
+      /* Centers shorter (1-line) entries within that reserved space,
+         instead of leaving them top-aligned with visible empty room
+         below. */
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
   </style>
 </head>
